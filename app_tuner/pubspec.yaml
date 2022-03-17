@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   # Pitch detector library
   pitch_detector_dart: ^0.0.2
-  pitchupdart: ^0.0.2
+  pitchupdart: ^0.0.1
   flutter_audio_capture: ^1.1.0
 dev_dependencies:
   flutter_test:

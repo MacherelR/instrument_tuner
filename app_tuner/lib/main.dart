@@ -62,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<double> sample = buffer.toList();
     // Compute result pitch value
     final result = pitchDetectorDart.getPitch(sample);
+    //print(result);
     if (result.pitched) {
       final handledPitch = pitchUp.handlePitch(result.pitch);
 
