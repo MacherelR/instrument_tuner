@@ -128,8 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                   child: Center(
                       child: FloatingActionButton(
-                          onPressed: _startRecording,
-                          child: const Text("Start")))),
+                onPressed: _startRecording,
+                child: const Text("Start"),
+              ))),
               Expanded(
                   child: Center(
                       child: FloatingActionButton(
