@@ -38,6 +38,8 @@ dependencies:
   pitch_detector_dart: ^0.0.2
   pitchupdart: ^0.0.1
   flutter_audio_capture: ^1.1.0
+  line_chart: ^1.0.9 
+  syncfusion_flutter_charts:  ^19.4.38
 dev_dependencies:
   flutter_test:
     sdk: flutter
