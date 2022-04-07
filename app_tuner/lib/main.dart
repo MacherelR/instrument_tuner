@@ -1,7 +1,7 @@
-import 'package:app_tuner/Pages/Settings.dart';
-import 'package:app_tuner/Pages/Stats.dart';
+import 'package:app_tuner/Pages/SettingsPage.dart';
+import 'package:app_tuner/Pages/StatsPage.dart';
 import 'package:flutter/material.dart';
-import 'Pages/Tuner.dart';
+import 'Pages/TunerPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => const SettingsScreen(),
       },
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
-      home: const Tuner(title: 'Flutter Demo Home Page'),
+      home: const Tuner(title: 'Instrument tuner app'),
     );
   }
 }
