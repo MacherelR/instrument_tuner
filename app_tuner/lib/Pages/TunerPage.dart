@@ -8,6 +8,7 @@ import 'package:pitch_detector_dart/pitch_detector.dart';
 import 'package:pitchupdart/instrument_type.dart';
 import 'package:pitchupdart/pitch_handler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:oscilloscope/oscilloscope.dart';
 
 class Tuner extends StatefulWidget {
   const Tuner({Key? key, required this.title}) : super(key: key);
@@ -120,6 +121,7 @@ class _TunerState extends State<Tuner> {
 
     tunerChartData = <TunerChartData>[];
     // TODO : Add the data from the tunerChartData list
+    // TODO : See https://pub.dev/packages/oscilloscope/example for live chart
     super.initState();
   }
 
