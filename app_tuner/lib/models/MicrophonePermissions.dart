@@ -13,6 +13,9 @@ class MicrophonePermissions {
   Future<void> RequestPermission() async {
     await Permission.microphone.request();
     isEnabled = await Permission.microphone.isGranted;
+    if (isEnabled == false) {
+      hasBeenRefused = true;
+    }
   }
 
   MicrophonePermissions() {

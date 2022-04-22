@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:app_tuner/models/MicrophonePermissions.dart';
+import 'package:app_tuner/models/tunerChartData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
@@ -36,6 +37,9 @@ class _TunerState extends State<Tuner> {
     } else {
       if (!permissions.hasBeenRefused) {
         _showDialog();
+      } else {
+        status = "Microphone access denied";
+        note = "";
       }
     }
   }
@@ -101,11 +105,9 @@ class _TunerState extends State<Tuner> {
   }
 
   List<_ChartData>? chartData;
-
+  List<TunerChartData>? tunerChartData;
   @override
   void initState() {
-    bool permis = permissions.isEnabled;
-
     chartData = <_ChartData>[
       _ChartData(2005, 21, 28),
       _ChartData(2006, 24, 44),
@@ -115,6 +117,9 @@ class _TunerState extends State<Tuner> {
       _ChartData(2010, 57, 78),
       _ChartData(2011, 70, 84)
     ];
+
+    tunerChartData = <TunerChartData>[];
+    // TODO : Add the data from the tunerChartData list
     super.initState();
   }
 
