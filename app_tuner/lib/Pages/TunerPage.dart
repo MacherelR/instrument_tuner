@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:app_tuner/models/MicrophonePermissions.dart';
 import 'package:app_tuner/models/tunerChartData.dart';
+import 'package:app_tuner/repository/settings_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
@@ -24,7 +25,7 @@ class _TunerState extends State<Tuner> {
   // TODO : change instrumentType to the one selected
   final pitchUp = PitchHandler(InstrumentType.guitar);
   MicrophonePermissions permissions = MicrophonePermissions();
-
+  // SettingsRepository appsSettings;
   var note = "";
   var status = "Click start";
   Future<void> _startRecording() async {
