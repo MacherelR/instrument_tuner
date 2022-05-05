@@ -1,4 +1,6 @@
 import 'dart:typed_data';
+import 'dart:async';
+import 'dart:math';
 
 import 'package:app_tuner/models/MicrophonePermissions.dart';
 import 'package:app_tuner/models/tunerChartData.dart';
@@ -27,6 +29,34 @@ class _TunerState extends State<Tuner> {
 
   var note = "";
   var status = "Click start";
+  double status2 = 0;
+  var status3 = "Click start";
+
+  List<double> tracePitch = [];
+  double radians = 0.0;
+  Timer? _timer;
+  _generateTrace(Timer t) {
+    // generate our  values
+    var sv = sin((radians * pi));
+
+    // Add to the growing dataset
+    setState(() {
+      tracePitch.add(status2);
+    });
+
+    // adjust to recyle the radian value ( as 0 = 2Pi RADS)
+    radians += 0.05;
+    if (radians >= 2.0) {
+      radians = 0.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer!.cancel();
+    super.dispose();
+  }
+
   Future<void> _startRecording() async {
     if (permissions.isEnabled) {
       await _audioRecorder.start(listener, onError,
@@ -96,7 +126,9 @@ class _TunerState extends State<Tuner> {
 
       setState(() {
         note = handledPitch.note;
-        status = handledPitch.tuningStatus.toString();
+        status = handledPitch.diffFrequency.toString();
+        status2 = result.pitch;
+        status3 = handledPitch.expectedFrequency.toString();
       });
     }
   }
@@ -109,20 +141,9 @@ class _TunerState extends State<Tuner> {
   List<TunerChartData>? tunerChartData;
   @override
   void initState() {
-    chartData = <_ChartData>[
-      _ChartData(2005, 21, 28),
-      _ChartData(2006, 24, 44),
-      _ChartData(2007, 36, 48),
-      _ChartData(2008, 38, 50),
-      _ChartData(2009, 54, 66),
-      _ChartData(2010, 57, 78),
-      _ChartData(2011, 70, 84)
-    ];
-
-    tunerChartData = <TunerChartData>[];
-    // TODO : Add the data from the tunerChartData list
-    // TODO : See https://pub.dev/packages/oscilloscope/example for live chart
     super.initState();
+    _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
+    tunerChartData = <TunerChartData>[];
   }
 
   List<LineSeries<_ChartData, num>> _getDefaultLineSeries() {
@@ -168,6 +189,18 @@ class _TunerState extends State<Tuner> {
 
   @override
   Widget build(BuildContext context) {
+    // Create A Scope Display for Sine
+    Oscilloscope scopeOne = Oscilloscope(
+      showYAxis: true,
+      yAxisColor: Colors.orange,
+      margin: EdgeInsets.all(20.0),
+      strokeWidth: 1.0,
+      backgroundColor: Colors.black,
+      traceColor: Colors.green,
+      yAxisMax: 1000.0,
+      yAxisMin: -1000.0,
+      dataSet: tracePitch,
+    );
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -219,6 +252,14 @@ class _TunerState extends State<Tuner> {
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold),
           )),
+          Center(
+              child: Text(
+            status3,
+            style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold),
+          )),
           Expanded(
             child: Row(
               children: [
@@ -237,7 +278,7 @@ class _TunerState extends State<Tuner> {
               ],
             ),
           ),
-          Expanded(child: Center(child: _buildDefaultLineChart(true))),
+          Expanded(flex: 1, child: scopeOne),
         ]),
       ),
     );
