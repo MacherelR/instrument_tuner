@@ -147,47 +147,6 @@ class _TunerState extends State<Tuner> {
     tunerChartData = <TunerChartData>[];
   }
 
-  List<LineSeries<_ChartData, num>> _getDefaultLineSeries() {
-    return <LineSeries<_ChartData, num>>[
-      LineSeries<_ChartData, num>(
-          animationDuration: 2500,
-          dataSource: chartData!,
-          xValueMapper: (_ChartData sales, _) => sales.x,
-          yValueMapper: (_ChartData sales, _) => sales.y,
-          width: 2,
-          name: 'Germany',
-          markerSettings: const MarkerSettings(isVisible: true)),
-      LineSeries<_ChartData, num>(
-          animationDuration: 2500,
-          dataSource: chartData!,
-          width: 2,
-          name: 'England',
-          xValueMapper: (_ChartData sales, _) => sales.x,
-          yValueMapper: (_ChartData sales, _) => sales.y2,
-          markerSettings: const MarkerSettings(isVisible: true))
-    ];
-  }
-
-  SfCartesianChart _buildDefaultLineChart(isCardView) {
-    return SfCartesianChart(
-      plotAreaBorderWidth: 0,
-      title: ChartTitle(text: isCardView ? '' : 'Inflation - Consumer price'),
-      legend: Legend(
-          isVisible: isCardView ? false : true,
-          overflowMode: LegendItemOverflowMode.wrap),
-      primaryXAxis: NumericAxis(
-          edgeLabelPlacement: EdgeLabelPlacement.shift,
-          interval: 2,
-          majorGridLines: const MajorGridLines(width: 0)),
-      primaryYAxis: NumericAxis(
-          labelFormat: '{value}%',
-          axisLine: const AxisLine(width: 0),
-          majorTickLines: const MajorTickLines(color: Colors.transparent)),
-      series: _getDefaultLineSeries(),
-      tooltipBehavior: TooltipBehavior(enable: true),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     // Create A Scope Display for Sine
@@ -203,37 +162,6 @@ class _TunerState extends State<Tuner> {
       dataSet: tracePitch,
     );
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text("Drawer Header"),
-            ),
-            ListTile(
-              title: const Text('Stats'),
-              onTap: () {
-                // TODO : Define navigation
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/stats');
-              },
-            ),
-            ListTile(
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/settings');
-              },
-            ),
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        title: const Text("Instrument Tuner"),
-      ),
       body: Center(
         child: Column(children: [
           Center(
