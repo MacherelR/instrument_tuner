@@ -8,4 +8,17 @@ class TunerSettings {
         _baseFrequency = baseFrequency;
   final InstrumentType _instrumentType;
   final double _baseFrequency;
+
+  TunerSettings.fromJson(Map<String, dynamic> json)
+      : _instrumentType = json['instrumentType'] ?? InstrumentType.guitar,
+        _baseFrequency = json['baseFrequency'] ?? 440;
+
+  Map<String, dynamic> toJson() => {
+        'instrumentType': _instrumentType.toString(),
+        'baseFrequency': _baseFrequency
+      };
+
+  InstrumentType get instrumentType {
+    return _instrumentType;
+  }
 }
