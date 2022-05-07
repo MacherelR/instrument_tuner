@@ -199,7 +199,7 @@ class _TunerState extends State<Tuner> {
       backgroundColor: Colors.black,
       traceColor: Colors.green,
       yAxisMax: 1000.0,
-      yAxisMin: -1000.0,
+      yAxisMin: 0.0,
       dataSet: tracePitch,
     );
     return Scaffold(
