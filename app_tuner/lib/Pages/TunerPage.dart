@@ -14,9 +14,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:oscilloscope/oscilloscope.dart';
 
 class Tuner extends StatefulWidget {
-  const Tuner({Key? key, required this.title}) : super(key: key);
+  const Tuner({Key? key}) : super(key: key);
   //MicrophonePermissions microphonePermissions;
-  final String title;
+  static const String route = '/home';
   @override
   State<Tuner> createState() => _TunerState();
 }
@@ -232,7 +232,7 @@ class _TunerState extends State<Tuner> {
         ),
       ),
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Instrument Tuner"),
       ),
       body: Center(
         child: Column(children: [
