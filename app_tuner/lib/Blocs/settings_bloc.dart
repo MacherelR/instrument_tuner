@@ -4,17 +4,18 @@ import 'package:app_tuner/Blocs/settings_event.dart';
 import 'package:app_tuner/Blocs/settings_state.dart';
 import 'package:app_tuner/models/Settings.dart';
 import 'package:app_tuner/repository/settings_repository.dart';
+import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:bloc/bloc.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc({required SettingsRepository settingsRepository})
+  SettingsBloc({required TunerRepository settingsRepository})
       : _settingsRepository = settingsRepository,
         super(SettingsState(status: SettingsStatus.initial)) {
     on<SettingsEdited>(_onSettingsEdited);
     on<SettingsSubscriptionRequested>(_onSettingsSubscriptionRequested);
   }
 
-  final SettingsRepository _settingsRepository;
+  final TunerRepository _settingsRepository;
 
   // Future<void> _onSettingsEdited(
   //     SettingsEdited event, Emitter<SettingsState> emit) async {

@@ -34,7 +34,9 @@ class SharedPrefsSettingsAPI extends SettingsApi {
 
   @override
   TunerSettings getSettings() {
-    return _settingsStreamController.value;
+    return _settingsStreamController.hasValue
+        ? _settingsStreamController.value
+        : const TunerSettings();
   }
 
   @override

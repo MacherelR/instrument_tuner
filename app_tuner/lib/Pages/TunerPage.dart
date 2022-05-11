@@ -21,6 +21,7 @@ class Tuner extends StatefulWidget {
   State<Tuner> createState() => _TunerState();
 }
 
+// TODO : Transform this into TunerView (as in SettingsView), so that we can transmit the TunerRepository and link with the provider
 class _TunerState extends State<Tuner> {
   final _audioRecorder = FlutterAudioCapture();
   final pitchDetectorDart = PitchDetector(44100, 2000);
@@ -91,7 +92,7 @@ class _TunerState extends State<Tuner> {
           return AlertDialog(
             title: const Text("Microphone permissions disabled"),
             content: const Text(
-                "The microphones permissions are disable, do you want to request them ?"),
+                "The microphones permissions are disabled, do you want to request them ?"),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
@@ -149,7 +150,7 @@ class _TunerState extends State<Tuner> {
 
   @override
   Widget build(BuildContext context) {
-    // Create A Scope Display for Sine
+    // Create A Scope Display for notes
     Oscilloscope scopeOne = Oscilloscope(
       showYAxis: true,
       yAxisColor: Colors.orange,
