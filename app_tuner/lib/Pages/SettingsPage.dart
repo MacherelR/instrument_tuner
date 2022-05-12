@@ -39,32 +39,7 @@ class SettingsView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const Center(
-            child: Text('Instrument Type'),
-          ),
-          Center(
-              child: DropdownButton<InstrumentType>(
-                  value: state.settings.instrumentType,
-                  icon: const Icon(Icons.arrow_downward),
-                  items: InstrumentType.values.map((InstrumentType classType) {
-                    return DropdownMenuItem<InstrumentType>(
-                        value: classType, child: Text(classType.name));
-                  }).toList(),
-                  onChanged: (value) {
-                    context
-                        .read<SettingsBloc>()
-                        .add(SettingsEdited(state.settings));
-                  })),
-          const Center(
-            child: Text("A4 Frequency"),
-          ),
           const Center(child: FrequencyForm()),
-          ElevatedButton(
-            onPressed: () {
-              // Navigate back to first screen when tapped.
-            },
-            child: const Text('Save Settings'),
-          ),
         ],
       );
     });

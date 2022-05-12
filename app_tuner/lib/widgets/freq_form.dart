@@ -1,5 +1,11 @@
+import 'package:app_tuner/Blocs/settings_state.dart';
+import 'package:app_tuner/models/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pitchupdart/instrument_type.dart';
+
+import '../Blocs/settings_bloc.dart';
+import '../Blocs/settings_event.dart';
 
 class FrequencyForm extends StatefulWidget {
   const FrequencyForm({Key? key}) : super(key: key);
@@ -12,36 +18,99 @@ class _FrequencyFormState extends State<FrequencyForm> {
   final _formKey = GlobalKey<FormState>();
   final defaultFrequency = 440.0;
   final frequencyController = TextEditingController(text: '440.0');
+  InstrumentType instrument = InstrumentType.guitar;
+  double setFrequency = 440.0;
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(
-              width: 100,
-              child: TextFormField(
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                controller: frequencyController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Define frequency';
-                  } else if (double.tryParse(value) == null) {
-                    return 'Not a Number';
-                  } else if (double.tryParse(value) == 0.0) {
-                    return 'Zero not allowed';
-                  }
-                  return null;
-                },
-                autovalidateMode: AutovalidateMode.always,
-              ),
-            ),
-          ],
-        ));
+    return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+      if (state.status == SettingsStatus.loading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          // const Center(
+          //   child: Text('Instrument Type'),
+          // ),
+          // Center(
+          //     child: DropdownButton<InstrumentType>(
+          //         value: state.settings.instrumentType,
+          //         icon: const Icon(Icons.arrow_downward),
+          //         items: InstrumentType.values.map((InstrumentType classType) {
+          //           return DropdownMenuItem<InstrumentType>(
+          //               value: classType, child: Text(classType.name));
+          //         }).toList(),
+          //         onChanged: (value) {
+          //           context
+          //               .read<SettingsBloc>()
+          //               .add(SettingsEdited(state.settings));
+          //         })),
+          Center(
+              child: Form(
+            key: _formKey,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Center(
+                    child: Text('Instrument Type'),
+                  ),
+                  Center(
+                      child: DropdownButton<InstrumentType>(
+                          value: state.settings.instrumentType,
+                          icon: const Icon(Icons.arrow_downward),
+                          items: InstrumentType.values
+                              .map((InstrumentType classType) {
+                            return DropdownMenuItem<InstrumentType>(
+                                value: classType, child: Text(classType.name));
+                          }).toList(),
+                          onChanged: (value) {
+                            instrument = value!;
+                          })),
+                  const Center(
+                    child: Text("A4 Frequency"),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: TextFormField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      controller: frequencyController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Define frequency';
+                        } else if (double.tryParse(value) == null) {
+                          return 'Not a Number';
+                        } else if (double.tryParse(value) == 0.0) {
+                          return 'Zero not allowed';
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.always,
+                      onChanged: (value) {
+                        setFrequency = double.tryParse(value)!;
+                      },
+                    ),
+                  ),
+                ]),
+          )),
+          ElevatedButton(
+            onPressed: () {
+              print(instrument.toString());
+              print(setFrequency.toString());
+              TunerSettings settings = TunerSettings(
+                  instrumentT: instrument, baseFrequency: setFrequency);
+              context.read<SettingsBloc>().add(SettingsEdited(settings));
+            },
+            child: const Text('Save Settings'),
+          ),
+        ],
+      );
+    });
   }
 
   @override
