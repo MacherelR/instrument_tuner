@@ -16,13 +16,15 @@ class FrequencyForm extends StatefulWidget {
 
 class _FrequencyFormState extends State<FrequencyForm> {
   final _formKey = GlobalKey<FormState>();
-  final defaultFrequency = 440.0;
-  final frequencyController = TextEditingController(text: '440.0');
-  InstrumentType instrument = InstrumentType.guitar;
-  double setFrequency = 440.0;
+  final frequencyController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+      TunerSettings settings = state.settings;
+      InstrumentType instrument = settings.instrumentType;
+      double setFrequency = settings.baseFrequency;
+      String text = settings.baseFrequency.toString();
+      frequencyController.value = frequencyController.value.copyWith(text: text);
       if (state.status == SettingsStatus.loading) {
         return const Center(
           child: CircularProgressIndicator(),
@@ -32,22 +34,6 @@ class _FrequencyFormState extends State<FrequencyForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          // const Center(
-          //   child: Text('Instrument Type'),
-          // ),
-          // Center(
-          //     child: DropdownButton<InstrumentType>(
-          //         value: state.settings.instrumentType,
-          //         icon: const Icon(Icons.arrow_downward),
-          //         items: InstrumentType.values.map((InstrumentType classType) {
-          //           return DropdownMenuItem<InstrumentType>(
-          //               value: classType, child: Text(classType.name));
-          //         }).toList(),
-          //         onChanged: (value) {
-          //           context
-          //               .read<SettingsBloc>()
-          //               .add(SettingsEdited(state.settings));
-          //         })),
           Center(
               child: Form(
             key: _formKey,
@@ -60,17 +46,28 @@ class _FrequencyFormState extends State<FrequencyForm> {
                     child: Text('Instrument Type'),
                   ),
                   Center(
-                      child: DropdownButton<InstrumentType>(
-                          value: state.settings.instrumentType,
-                          icon: const Icon(Icons.arrow_downward),
-                          items: InstrumentType.values
-                              .map((InstrumentType classType) {
-                            return DropdownMenuItem<InstrumentType>(
-                                value: classType, child: Text(classType.name));
-                          }).toList(),
-                          onChanged: (value) {
-                            instrument = value!;
-                          })),
+                     child: DropdownButton<InstrumentType>(
+                      value: settings.instrumentType,
+                      icon: const Icon(Icons.arrow_downward),
+                      items: InstrumentType.values
+                          .map((InstrumentType classType) {
+                        return DropdownMenuItem<InstrumentType>(
+                            value: classType, child: Text(classType.name));
+                      }).toList(),
+                      onChanged: (value) {
+                        // print("onChanged, value = " + value.toString());
+                        // instrument = value!;
+                        // print("instrument var value : " + instrument.toString());
+                        // setState(() {
+                        //   value: instrument;
+                        // });
+                        instrument = value!;
+                        TunerSettings settings = TunerSettings(
+                            instrumentT: instrument, baseFrequency: setFrequency);
+                        context.read<SettingsBloc>().add(SettingsEdited(settings));
+                      },
+                      )
+                  ),
                   const Center(
                     child: Text("A4 Frequency"),
                   ),
@@ -93,21 +90,24 @@ class _FrequencyFormState extends State<FrequencyForm> {
                       autovalidateMode: AutovalidateMode.always,
                       onChanged: (value) {
                         setFrequency = double.tryParse(value)!;
+                        TunerSettings settings = TunerSettings(
+                            instrumentT: instrument, baseFrequency: setFrequency);
+                        context.read<SettingsBloc>().add(SettingsEdited(settings));
                       },
                     ),
                   ),
                 ]),
           )),
-          ElevatedButton(
-            onPressed: () {
-              print(instrument.toString());
-              print(setFrequency.toString());
-              TunerSettings settings = TunerSettings(
-                  instrumentT: instrument, baseFrequency: setFrequency);
-              context.read<SettingsBloc>().add(SettingsEdited(settings));
-            },
-            child: const Text('Save Settings'),
-          ),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     print("instrument var value :" + instrument.toString());
+          //     print(setFrequency.toString());
+          //     TunerSettings settings = TunerSettings(
+          //         instrumentT: instrument, baseFrequency: setFrequency);
+          //     context.read<SettingsBloc>().add(SettingsEdited(settings));
+          //   },
+          //   child: const Text('Save Settings'),
+          // ),
         ],
       );
     });

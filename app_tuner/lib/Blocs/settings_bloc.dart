@@ -25,7 +25,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   // }
   Future<void> _onSettingsEdited(
       SettingsEdited event, Emitter<SettingsState> emit) async {
+    emit(state.copyWith(status: SettingsStatus.loading));
     await _settingsRepository.saveSettings(event.settings);
+    emit(state.copyWith(status: SettingsStatus.loaded, settings: event.settings));
   }
 
   Future<void> _onSettingsSubscriptionRequested(

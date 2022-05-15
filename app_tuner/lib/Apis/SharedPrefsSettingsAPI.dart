@@ -14,11 +14,9 @@ class SharedPrefsSettingsAPI extends SettingsApi {
       : _preferences = plugin {
     final settingsJson = _getValue(_settingsKey);
     if (settingsJson != null) {
-      final settings = (json.decode(settingsJson) as List)
-          .map((e) => TunerSettings.fromJson(e))
-          .toList();
+      final settings = (json.decode(settingsJson));
     } else {
-      final settings = [const TunerSettings()];
+      final settings = const TunerSettings();
     }
   }
 
@@ -26,23 +24,25 @@ class SharedPrefsSettingsAPI extends SettingsApi {
   Future<void> deleteSettings(String id) {
     throw UnimplementedError();
   }
-
-  final _settingsStreamController = BehaviorSubject<TunerSettings>();
   String? _getValue(String key) => _preferences.getString(_settingsKey);
   Future<void> _setValue(String key, String value) =>
       _preferences.setString(key, value);
 
   @override
   TunerSettings getSettings() {
-    return _settingsStreamController.hasValue
-        ? _settingsStreamController.value
-        : const TunerSettings();
+    final settingsJson = _getValue(_settingsKey);
+    if(settingsJson != null){
+      var decoded = json.decode(settingsJson) as Map<String,dynamic>;
+      var decodedSettings = TunerSettings.fromJson(decoded);
+      return decodedSettings;
+    }
+    else{
+      return const TunerSettings();
+    }
   }
 
   @override
   Future<void> saveSettings(TunerSettings tunerSettings) {
-    final settings = _settingsStreamController.value;
-    _settingsStreamController.add(tunerSettings);
-    return _setValue(_settingsKey, json.encode(settings));
+    return _setValue(_settingsKey, json.encode(tunerSettings));
   }
 }
