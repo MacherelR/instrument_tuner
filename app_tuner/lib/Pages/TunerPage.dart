@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:app_tuner/models/MicrophonePermissions.dart';
 import 'package:app_tuner/models/tunerChartData.dart';
 import 'package:app_tuner/repository/settings_repository.dart';
+import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
@@ -12,6 +13,7 @@ import 'package:pitchupdart/instrument_type.dart';
 import 'package:pitchupdart/pitch_handler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:oscilloscope/oscilloscope.dart';
+
 
 class Tuner extends StatefulWidget {
   const Tuner({Key? key}) : super(key: key);
@@ -21,11 +23,12 @@ class Tuner extends StatefulWidget {
   State<Tuner> createState() => _TunerState();
 }
 
-// TODO : Transform this into TunerView (as in SettingsView), so that we can transmit the TunerRepository and link with the provider
+//TODO : Transform this into TunerView (as in SettingsView), so that we can transmit the TunerRepository and link with the provider
 class _TunerState extends State<Tuner> {
   final _audioRecorder = FlutterAudioCapture();
   final pitchDetectorDart = PitchDetector(44100, 2000);
   // TODO : change instrumentType to the one selected
+
   final pitchUp = PitchHandler(InstrumentType.guitar);
   MicrophonePermissions permissions = MicrophonePermissions();
   // SettingsRepository appsSettings;
@@ -82,6 +85,7 @@ class _TunerState extends State<Tuner> {
     setState(() {
       note = "";
       status = "Stopped, please click on start button";
+
     });
   }
 
@@ -122,7 +126,7 @@ class _TunerState extends State<Tuner> {
     final List<double> sample = buffer.toList();
     // Compute result pitch value
     final result = pitchDetectorDart.getPitch(sample);
-    //print(result);
+    /// Why not add directly to oscilloscope dataset here ?
     if (result.pitched) {
       final handledPitch = pitchUp.handlePitch(result.pitch);
 
@@ -139,18 +143,18 @@ class _TunerState extends State<Tuner> {
     print(err);
   }
 
-  List<_ChartData>? chartData;
-  List<TunerChartData>? tunerChartData;
+  // List<TunerChartData>? tunerChartData;
   @override
   void initState() {
     super.initState();
     _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
-    tunerChartData = <TunerChartData>[];
+    // tunerChartData = <TunerChartData>[];
   }
 
   @override
   Widget build(BuildContext context) {
     // Create A Scope Display for notes
+
     Oscilloscope scopeOne = Oscilloscope(
       showYAxis: true,
       yAxisColor: Colors.orange,
@@ -215,9 +219,3 @@ class _TunerState extends State<Tuner> {
   }
 }
 
-class _ChartData {
-  _ChartData(this.x, this.y, this.y2);
-  final double x;
-  final double y;
-  final double y2;
-}
