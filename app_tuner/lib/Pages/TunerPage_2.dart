@@ -3,6 +3,9 @@
 // import 'dart:math';
 //
 // import 'package:app_tuner/Blocs/settings_event.dart';
+// import 'package:app_tuner/Blocs/tuner_bloc.dart';
+// import 'package:app_tuner/Blocs/tuner_event.dart';
+// import 'package:app_tuner/Blocs/tuner_state.dart';
 // import 'package:app_tuner/models/MicrophonePermissions.dart';
 // import 'package:app_tuner/models/Settings.dart';
 // import 'package:app_tuner/models/tunerChartData.dart';
@@ -27,9 +30,9 @@
 //   @override
 //   Widget build(BuildContext context){
 //     return BlocProvider(
-//         create: (context) => SettingsBloc(
-//           settingsRepository: context.read<TunerRepository>(),
-//         )..add(const SettingsSubscriptionRequested()),
+//         create: (context) => TunerBloc(
+//           tunerRepository: context.read<TunerRepository>(),
+//         )..add(const TunerSubscriptionRequested()),
 //         child: const TunerView(),
 //     );
 //   }
@@ -39,7 +42,7 @@
 //   const TunerView({Key? key}) : super(key: key);
 //   @override
 //   Widget build(BuildContext context){
-//     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context,state){
+//     return BlocBuilder<TunerBloc, TunerState>(builder: (context,state){
 //       return Column(
 //         mainAxisAlignment: MainAxisAlignment.center,
 //         crossAxisAlignment: CrossAxisAlignment.center,

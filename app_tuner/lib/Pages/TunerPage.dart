@@ -29,8 +29,10 @@ class _TunerState extends State<Tuner> {
   final _audioRecorder = FlutterAudioCapture();
   final pitchDetectorDart = PitchDetector(44100, 2000);
   // TODO : change instrumentType to the one selected
+
   final pitchUp = PitchHandler(InstrumentType.guitar);
   MicrophonePermissions permissions = MicrophonePermissions();
+
   // SettingsRepository appsSettings;
   var note = "";
   var status = "Click start";
@@ -41,19 +43,10 @@ class _TunerState extends State<Tuner> {
   double radians = 0.0;
   Timer? _timer;
   _generateTrace(Timer t) {
-    // generate our  values
-    var sv = sin((radians * pi));
-
     // Add to the growing dataset
     setState(() {
       tracePitch.add(status2);
     });
-
-    // adjust to recyle the radian value ( as 0 = 2Pi RADS)
-    radians += 0.05;
-    if (radians >= 2.0) {
-      radians = 0.0;
-    }
   }
 
   @override
@@ -64,6 +57,7 @@ class _TunerState extends State<Tuner> {
 
   Future<void> _startRecording() async {
     if (permissions.isEnabled) {
+      _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
       await _audioRecorder.start(listener, onError,
           sampleRate: 44100, bufferSize: 3000);
       setState(() {
@@ -82,6 +76,7 @@ class _TunerState extends State<Tuner> {
 
   Future<void> _stopRecording() async {
     await _audioRecorder.stop();
+    _timer!.cancel();
     setState(() {
       note = "";
       status = "Stopped, please click on start button";
@@ -129,7 +124,6 @@ class _TunerState extends State<Tuner> {
     /// Why not add directly to oscilloscope dataset here ?
     if (result.pitched) {
       final handledPitch = pitchUp.handlePitch(result.pitch);
-
       setState(() {
         note = handledPitch.note;
         status = handledPitch.diffFrequency.toString();
@@ -147,7 +141,7 @@ class _TunerState extends State<Tuner> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
+
     // tunerChartData = <TunerChartData>[];
 
   }

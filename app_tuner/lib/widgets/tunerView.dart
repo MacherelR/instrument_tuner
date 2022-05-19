@@ -4,6 +4,8 @@
 // import 'dart:math';
 // import 'dart:typed_data';
 //
+// import 'package:app_tuner/Blocs/tuner_bloc.dart';
+// import 'package:app_tuner/Blocs/tuner_state.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_audio_capture/flutter_audio_capture.dart';
@@ -128,7 +130,7 @@
 //   }
 //   @override
 //   Widget build(BuildContext context) {
-//     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+//     return BlocBuilder<TunerBloc, TunerState>(builder: (context, state) {
 //       final pitchUp = PitchHandler(state.settings.instrumentType);
 //
 //
