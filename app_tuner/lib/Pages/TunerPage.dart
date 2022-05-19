@@ -15,7 +15,6 @@ import 'package:pitchupdart/pitch_handler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:oscilloscope/oscilloscope.dart';
 
-
 class Tuner extends StatefulWidget {
   const Tuner({Key? key}) : super(key: key);
   //MicrophonePermissions microphonePermissions;
@@ -36,7 +35,7 @@ class _TunerState extends State<Tuner> {
   var status = "Click start";
   double status2 = 0;
   var status3 = "Click start";
-
+  var diffFrequency = 0.0;
   List<double> tracePitch = [];
   double radians = 0.0;
   Timer? _timer;
@@ -46,7 +45,7 @@ class _TunerState extends State<Tuner> {
 
     // Add to the growing dataset
     setState(() {
-      tracePitch.add(status2);
+      tracePitch.add(diffFrequency);
     });
 
     // adjust to recyle the radian value ( as 0 = 2Pi RADS)
@@ -85,7 +84,6 @@ class _TunerState extends State<Tuner> {
     setState(() {
       note = "";
       status = "Stopped, please click on start button";
-
     });
   }
 
@@ -126,6 +124,7 @@ class _TunerState extends State<Tuner> {
     final List<double> sample = buffer.toList();
     // Compute result pitch value
     final result = pitchDetectorDart.getPitch(sample);
+
     /// Why not add directly to oscilloscope dataset here ?
     if (result.pitched) {
       final handledPitch = pitchUp.handlePitch(result.pitch);
@@ -134,7 +133,7 @@ class _TunerState extends State<Tuner> {
         note = handledPitch.note;
         status = handledPitch.diffFrequency.toString();
         status2 = result.pitch;
-        status3 = handledPitch.expectedFrequency.toString();
+        diffFrequency = handledPitch.diffFrequency;
       });
     }
   }
@@ -149,7 +148,6 @@ class _TunerState extends State<Tuner> {
     super.initState();
     _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
     // tunerChartData = <TunerChartData>[];
-
   }
 
   @override
@@ -162,8 +160,8 @@ class _TunerState extends State<Tuner> {
       strokeWidth: 1.0,
       backgroundColor: Colors.black,
       traceColor: Colors.green,
-      yAxisMax: 1000.0,
-      yAxisMin: 0.0,
+      yAxisMax: 10.0,
+      yAxisMin: -10.0,
       dataSet: tracePitch,
     );
     return Scaffold(
@@ -218,4 +216,3 @@ class _TunerState extends State<Tuner> {
     );
   }
 }
-
