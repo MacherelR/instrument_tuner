@@ -41,6 +41,7 @@ class _TunerState extends State<Tuner> {
   List<double> tracePitch = [];
   double radians = 0.0;
   Timer? _timer;
+  Stopwatch tuneTime = Stopwatch();
   _generateTrace(Timer t) {
     // Add to the growing dataset
     setState(() {
@@ -56,6 +57,8 @@ class _TunerState extends State<Tuner> {
 
   Future<void> _startRecording() async {
     if (permissions.isEnabled) {
+      tuneTime.reset();
+      tuneTime.start();
       _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
       await _audioRecorder.start(listener, onError,
           sampleRate: 44100, bufferSize: 3000);
@@ -75,6 +78,8 @@ class _TunerState extends State<Tuner> {
 
   Future<void> _stopRecording() async {
     await _audioRecorder.stop();
+    tuneTime.stop();
+    print(tuneTime.elapsed);
     _timer!.cancel();
     setState(() {
       note = "";

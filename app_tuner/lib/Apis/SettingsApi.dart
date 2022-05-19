@@ -5,5 +5,3 @@ abstract class SettingsApi {
   TunerSettings getSettings();
   Future<void> saveSettings(TunerSettings tunerSettings);
 }
-
-class TodoNotFoundException implements Exception {}
