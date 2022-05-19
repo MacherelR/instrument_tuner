@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:app_tuner/models/MicrophonePermissions.dart';
+import 'package:app_tuner/models/Settings.dart';
 import 'package:app_tuner/models/tunerChartData.dart';
 import 'package:app_tuner/repository/settings_repository.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
@@ -28,7 +29,6 @@ class _TunerState extends State<Tuner> {
   final _audioRecorder = FlutterAudioCapture();
   final pitchDetectorDart = PitchDetector(44100, 2000);
   // TODO : change instrumentType to the one selected
-
   final pitchUp = PitchHandler(InstrumentType.guitar);
   MicrophonePermissions permissions = MicrophonePermissions();
   // SettingsRepository appsSettings;
@@ -149,12 +149,12 @@ class _TunerState extends State<Tuner> {
     super.initState();
     _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
     // tunerChartData = <TunerChartData>[];
+
   }
 
   @override
   Widget build(BuildContext context) {
     // Create A Scope Display for notes
-
     Oscilloscope scopeOne = Oscilloscope(
       showYAxis: true,
       yAxisColor: Colors.orange,
