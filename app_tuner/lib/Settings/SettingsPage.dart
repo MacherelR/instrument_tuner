@@ -1,4 +1,4 @@
-import 'package:app_tuner/Blocs/settings_event.dart';
+import 'package:app_tuner/Settings/settings_event.dart';
 import 'package:app_tuner/repository/settings_repository.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:app_tuner/widgets/freq_form.dart';
@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pitchupdart/instrument_type.dart';
 
-import '../Blocs/settings_bloc.dart';
-import '../Blocs/settings_state.dart';
+import 'settings_bloc.dart';
+import 'settings_state.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);

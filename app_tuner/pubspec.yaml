@@ -41,8 +41,6 @@ dependencies:
   line_chart: ^1.0.9 
   syncfusion_flutter_charts:  ^19.4.38
   permission_handler: ^8.0.0+2
-  firebase_core: ^1.14.0
-  cloud_firestore: ^3.1.11
   oscilloscope: ^0.2.0+1
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
@@ -53,6 +51,7 @@ dependencies:
   hive: ^2.1.0
   hive_flutter: ^1.1.0
   uuid: ^3.0.6
+  path_provider: ^2.0.2
   
 dev_dependencies:
   flutter_test:
@@ -64,6 +63,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  hive_generator: ^1.1.2
+  build_runner: ^2.1.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

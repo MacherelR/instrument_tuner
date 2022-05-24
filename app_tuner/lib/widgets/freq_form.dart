@@ -1,11 +1,11 @@
-import 'package:app_tuner/Blocs/settings_state.dart';
+import 'package:app_tuner/Settings/settings_state.dart';
 import 'package:app_tuner/models/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pitchupdart/instrument_type.dart';
 
-import '../Blocs/settings_bloc.dart';
-import '../Blocs/settings_event.dart';
+import '../Settings/settings_bloc.dart';
+import '../Settings/settings_event.dart';
 
 class FrequencyForm extends StatefulWidget {
   const FrequencyForm({Key? key}) : super(key: key);
@@ -98,16 +98,6 @@ class _FrequencyFormState extends State<FrequencyForm> {
                   ),
                 ]),
           )),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     print("instrument var value :" + instrument.toString());
-          //     print(setFrequency.toString());
-          //     TunerSettings settings = TunerSettings(
-          //         instrumentT: instrument, baseFrequency: setFrequency);
-          //     context.read<SettingsBloc>().add(SettingsEdited(settings));
-          //   },
-          //   child: const Text('Save Settings'),
-          // ),
         ],
       );
     });

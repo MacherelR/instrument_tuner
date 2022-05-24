@@ -2,9 +2,10 @@ import 'package:app_tuner/cubits/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'SettingsPage.dart';
+import '../Settings/SettingsPage.dart';
 import 'StatsPage.dart';
-import 'TunerPage.dart';
+import '../Tuner/TunerPage.dart';
+import '../Tuner/TunerPage_2.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class HomeView extends StatelessWidget {
         title: const Text('Instrument tuner'),
       ),
       body: selectedTab == HomeTab.tuner
-          ? Tuner()
+          ? const Tuner()
           : selectedTab == HomeTab.stats
               ? const StatsScreen()
               : const SettingsScreen(),

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:app_tuner/Pages/TunerPage.dart';
+import 'package:app_tuner/Tuner/TunerPage.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:app_tuner/Apis/SettingsApi.dart';
 import 'package:app_tuner/models/Settings.dart';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'Pages/HomePage.dart';
-import 'Pages/TunerPage.dart';
+import 'Tuner/TunerPage.dart';
 
 class App extends StatefulWidget {
   const App({Key? key, required this.tunerRepository}) : super(key: key);

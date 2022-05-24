@@ -42,7 +42,7 @@ class _TunerState extends State<Tuner> {
   double radians = 0.0;
   Timer? _timer;
   Stopwatch tuneTime = Stopwatch();
-  _generateTrace(Timer t) {
+  _generateTrace(Timer t) { // Tracepitch dans le bloc et ajouter dans le bloc
     // Add to the growing dataset
     setState(() {
       tracePitch.add(diffFrequency);
@@ -51,7 +51,9 @@ class _TunerState extends State<Tuner> {
 
   @override
   void dispose() {
-    _timer!.cancel();
+    if(_timer != null) {
+      _timer!.cancel();
+    }
     super.dispose();
   }
 
@@ -74,6 +76,7 @@ class _TunerState extends State<Tuner> {
         note = "";
       }
     }
+
   }
 
   Future<void> _stopRecording() async {
@@ -111,7 +114,7 @@ class _TunerState extends State<Tuner> {
                     } else {
                       permissions.hasBeenRefused = false;
                     }
-                    _startRecording();
+                    _startRecording(); // context.read<TunerBloc>().start()
                   },
                   child: const Text("Yes"))
             ],
@@ -119,13 +122,13 @@ class _TunerState extends State<Tuner> {
         });
   }
 
-  void listener(dynamic obj) {
+  void listener(dynamic obj) { // Move to bloc private method
     var buffer = Float64List.fromList(obj.cast<double>());
     final List<double> sample = buffer.toList();
     // Compute result pitch value
     final result = pitchDetectorDart.getPitch(sample);
 
-    /// Why not add directly to oscilloscope dataset here ?
+
     if (result.pitched) {
       final handledPitch = pitchUp.handlePitch(result.pitch);
       setState(() {
@@ -134,6 +137,7 @@ class _TunerState extends State<Tuner> {
         status2 = result.pitch;
         diffFrequency = handledPitch.diffFrequency;
       });
+      //context.read<TunerBloc>().add(TunerRefresh())
     }
   }
 
@@ -145,8 +149,6 @@ class _TunerState extends State<Tuner> {
   @override
   void initState() {
     super.initState();
-
-    // tunerChartData = <TunerChartData>[];
   }
 
   @override
@@ -204,7 +206,7 @@ class _TunerState extends State<Tuner> {
                     child: Center(
                         child: FloatingActionButton(
                             heroTag: "stop",
-                            onPressed: _stopRecording,
+                            onPressed: _stopRecording,// context.read<TunerBloc>().method
                             child: const Text("Stop")))),
               ],
             ),

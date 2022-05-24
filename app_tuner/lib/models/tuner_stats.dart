@@ -3,7 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
-
+part 'tuner_stats.g.dart';
 @HiveType(typeId: 0)
 class TunerStats{
   @HiveField(0)
@@ -14,10 +14,6 @@ class TunerStats{
   List<double> tracePitch;
   @HiveField(3)
   String id;
-  TunerStats({Position? pos, required Duration dur, required List<double> trace, String? id}):
-      location = pos,
-      duration = dur,
-      tracePitch = trace,
+  TunerStats({this.location, required this.duration, required this.tracePitch, String? id}):
       id = id ?? const Uuid().v4();
-
 }
