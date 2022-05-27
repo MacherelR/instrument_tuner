@@ -29,7 +29,7 @@ class HomeView extends StatelessWidget {
         title: const Text('Instrument tuner'),
       ),
       body: selectedTab == HomeTab.tuner
-          ? const Tuner()
+          ? const TunerScreen()
           : selectedTab == HomeTab.stats
               ? const StatsScreen()
               : const SettingsScreen(),

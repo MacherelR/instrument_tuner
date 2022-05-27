@@ -16,6 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final hiveStorage = HiveApi();
   Hive.registerAdapter(TunerStatsAdapter());
+  Hive.registerAdapter(DurationAdapter());
   final sharedPrefsStorage =
       SharedPrefsSettingsAPI(plugin: await SharedPreferences.getInstance());
   runApp(App(

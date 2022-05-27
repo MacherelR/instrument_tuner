@@ -20,6 +20,7 @@ class TunerStatsAdapter extends TypeAdapter<TunerStats> {
       location: fields[0] as Position?,
       duration: fields[1] as Duration,
       tracePitch: (fields[2] as List).cast<double>(),
+      date: fields[4] as DateTime,
       id: fields[3] as String?,
     );
   }
@@ -27,7 +28,7 @@ class TunerStatsAdapter extends TypeAdapter<TunerStats> {
   @override
   void write(BinaryWriter writer, TunerStats obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.location)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class TunerStatsAdapter extends TypeAdapter<TunerStats> {
       ..writeByte(2)
       ..write(obj.tracePitch)
       ..writeByte(3)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(4)
+      ..write(obj.date);
   }
 
   @override
