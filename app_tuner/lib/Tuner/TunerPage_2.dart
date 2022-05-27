@@ -42,13 +42,13 @@ class TunerView extends StatelessWidget{
   const TunerView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context){
+
     return BlocBuilder<TunerBloc, TunerState>(builder: (context,state){
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          const Center(child: TunerViewWidget()),
-        ],
+      Size size = MediaQuery.of(context).size;
+      return SizedBox(
+        height: size.height,
+        width: size.width,
+        child: TunerViewWidget(),
       );
     });
   }

@@ -19,7 +19,6 @@ void main() async {
   final sharedPrefsStorage =
       SharedPrefsSettingsAPI(plugin: await SharedPreferences.getInstance());
   runApp(App(
-      // Later there'll be settings repo and tuner repo in one
       tunerRepository: TunerRepository(
       settingsApi: sharedPrefsStorage,
       statsApi: hiveStorage

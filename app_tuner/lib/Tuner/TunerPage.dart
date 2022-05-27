@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:app_tuner/models/MicrophonePermissions.dart';
 import 'package:app_tuner/models/Settings.dart';
 import 'package:app_tuner/models/tunerChartData.dart';
+import 'package:app_tuner/models/tuner_stats.dart';
 import 'package:app_tuner/repository/settings_repository.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,13 @@ class _TunerState extends State<Tuner> {
     }
 
   }
+
+//   Future<void> _saveRandomStat() async{
+//     Duration dur = const Duration(hours: 1, minutes: 1, seconds: 2);
+//     List<double> trace = [446,448,450,457,498,422,435,440];
+//     TunerStats rdm = TunerStats(duration: dur, tracePitch: trace);
+//     await context.read<TunerRepository>().saveStat(rdm);
+// }
 
   Future<void> _stopRecording() async {
     await _audioRecorder.stop();
@@ -208,6 +216,15 @@ class _TunerState extends State<Tuner> {
                             heroTag: "stop",
                             onPressed: _stopRecording,// context.read<TunerBloc>().method
                             child: const Text("Stop")))),
+                // Expanded(
+                //   child: Center(
+                //     child: FloatingActionButton(
+                //       heroTag: "Save random stat",
+                //       onPressed: _saveRandomStat,
+                //       child: const Text("Save rdm stat"),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

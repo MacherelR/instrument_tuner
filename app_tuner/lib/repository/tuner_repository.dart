@@ -1,4 +1,5 @@
 import 'package:app_tuner/Apis/SettingsApi.dart';
+import 'package:app_tuner/models/tuner_stats.dart';
 import 'package:app_tuner/repository/settings_repository.dart';
 
 import '../Apis/stats_api.dart';
@@ -25,5 +26,15 @@ class TunerRepository {
   }
 
 
-  // TODO : Add required methods to store stats
+  Future<void> saveStat(TunerStats stat) async {
+    return await _statsApi.saveStat(stat);
+  }
+
+  Future<void> deleteStat(String id) async {
+    return await _statsApi.deleteStat(id);
+  }
+
+  Stream<List<TunerStats>> getStats(){
+    return _statsApi.getStats();
+  }
 }
