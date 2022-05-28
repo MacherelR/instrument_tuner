@@ -29,15 +29,15 @@ class Tuner extends StatefulWidget {
   State<Tuner> createState() => _TunerState();
 }
 
-//TODO : Transform this into TunerView (as in SettingsView), so that we can transmit the TunerRepository and link with the provider
+enum TunerState {initial,running,stopped}
+
 class _TunerState extends State<Tuner> {
   final _audioRecorder = FlutterAudioCapture();
   final pitchDetectorDart = PitchDetector(44100, 2000);
-  // TODO : change instrumentType to the one selected
 
   late final PitchHandler pitchUp;
   MicrophonePermissions permissions = MicrophonePermissions();
-
+  TunerState _tunerState = TunerState.initial;
   // SettingsRepository appsSettings;
   var note = "";
   var status = "Click start";
@@ -63,6 +63,7 @@ class _TunerState extends State<Tuner> {
   }
 
   Future<void> _startRecording(BuildContext context) async {
+    _tunerState = TunerState.running;
     if (permissions.isEnabled) {
       tuneTime.reset();
       tuneTime.start();
@@ -83,14 +84,10 @@ class _TunerState extends State<Tuner> {
     }
   }
 
-//   Future<void> _saveRandomStat() async{
-//     Duration dur = const Duration(hours: 1, minutes: 1, seconds: 2);
-//     List<double> trace = [446,448,450,457,498,422,435,440];
-//     TunerStats rdm = TunerStats(duration: dur, tracePitch: trace);
-//     await context.read<TunerRepository>().saveStat(rdm);
-// }
+
 
   Future<void> _stopRecording() async {
+    _tunerState = TunerState.stopped;
     await _audioRecorder.stop();
     tuneTime.stop();
     print(tuneTime.elapsed);
@@ -213,21 +210,35 @@ class _TunerState extends State<Tuner> {
                             onPressed: () => {_startRecording(context)},
                             child: const Text("Start")))),
                 Expanded(
+                  child: Center(
+                    child: Visibility(
+                        visible: (_tunerState == TunerState.stopped),
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child :FloatingActionButton(
+                          heroTag: "Save stat",
+                          onPressed: (){
+                            Duration dur = tuneTime.elapsed;
+                            List<double> trace = tracePitch;
+                            DateTime now = DateTime.now();
+                            TunerStats stats = TunerStats(
+                                duration: dur,tracePitch: trace,date: now
+                            );
+                            context.read<TunerRepository>().saveStat(stats);
+                          },
+                          child: const Text("Save"),
+                        )
+                    ),
+                  ),
+                ),
+                Expanded(
                     child: Center(
                         child: FloatingActionButton(
                             heroTag: "stop",
                             onPressed:
                                 _stopRecording,
                             child: const Text("Stop")))),
-                // Expanded(
-                //   child: Center(
-                //     child: FloatingActionButton(
-                //       heroTag: "Save random stat",
-                //       onPressed: _saveRandomStat,
-                //       child: const Text("Save rdm stat"),
-                //     ),
-                //   ),
-                // ),
+
               ],
             ),
           ),
