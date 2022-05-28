@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
@@ -28,11 +26,7 @@ class TunerViewWidget extends StatefulWidget {
   State<TunerViewWidget> createState() => _TunerViewWidgetState();
 }
 
-
-
 class _TunerViewWidgetState extends State<TunerViewWidget> {
-
-
   @override
   void dispose() {
     super.dispose();
@@ -46,10 +40,10 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
       // check if status == permissionDenied, _showDialog sinon rien
       Oscilloscope scopeOne = Oscilloscope(
         showYAxis: true,
-        yAxisColor: Colors.orange,
+        yAxisColor: Color.fromARGB(255, 255, 0, 0),
         margin: EdgeInsets.all(20.0),
         strokeWidth: 1.0,
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 0, 38, 255),
         traceColor: Colors.green,
         yAxisMax: 10.0,
         yAxisMin: -10.0,
@@ -57,88 +51,83 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
       );
       return Scaffold(
         body: Center(
-          child: Column(children: [
-            Center(
-              child: Text(
-                state.note,
-                style: const TextStyle(
-                  color: Colors.black87,
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold,
+          child: Column(
+            children: [
+              Center(
+                child: Text(
+                  state.note,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            const Spacer(),
-            Center(
-              child: Text(
-                state.status1,
-                style: const TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Center(
-              child: Text(
-                state.status3,
-                style: const TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: FloatingActionButton(
-                        heroTag: "Start",
-                        onPressed: (){
-                          context.read<TunerBloc>().add(TunerStarted());
-                        },
-                        child: const Text("Start"),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: FloatingActionButton(
+                          heroTag: "Start",
+                          onPressed: () {
+                            context
+                                .read<TunerBloc>()
+                                .add(TunerStarted(context));
+                          },
+                          child: const Text("Start"),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: FloatingActionButton(
-                        heroTag: "Stop",
-                        onPressed: (){
-                          context.read<TunerBloc>().add(TunerStopped());
-                        },
-                        child: const Text("Stop"),
+                    Expanded(
+                      child: Center(
+                        child: FloatingActionButton(
+                          heroTag: "Stop",
+                          onPressed: () {
+                            context.read<TunerBloc>().add(TunerStopped());
+                          },
+                          child: const Text("Stop"),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: FloatingActionButton(
-                        heroTag: "Save random stat",
-                        onPressed: (){
-                          Duration dur = const Duration(hours: 1, minutes: 1, seconds: 2);
-                          List<double> trace = [446,448,450,457,498,422,435,440];
-                          DateTime today = DateTime.now();
-                          TunerStats rdm = TunerStats(duration: dur, tracePitch: trace, date: today);
-                          context.read<TunerRepository>().saveStat(rdm);
-                          print("Stat saved");
-                        },
-                        child: const Text("Save rdm stat"),
+                    Expanded(
+                      child: Center(
+                        child: FloatingActionButton(
+                          heroTag: "Save random stat",
+                          onPressed: () {
+                            Duration dur = const Duration(
+                                hours: 1, minutes: 1, seconds: 2);
+                            List<double> trace = [
+                              446,
+                              448,
+                              450,
+                              457,
+                              498,
+                              422,
+                              435,
+                              440
+                            ];
+                            DateTime today = DateTime.now();
+                            TunerStats rdm = TunerStats(
+                                duration: dur, tracePitch: trace, date: today);
+                            context.read<TunerRepository>().saveStat(rdm);
+                            print("Stat saved");
+                          },
+                          child: const Text("Save rdm stat"),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Expanded(flex: 1, child: scopeOne),
-          ],),
+              Expanded(flex: 1, child: scopeOne),
+            ],
+          ),
         ),
       );
       // return ElevatedButton(onPressed: (){
       //   context.read<TunerBloc>().add(TunerPermissionRequested());
       // }, child: const Text("Send request status"));
-
     });
   }
 }

@@ -5,6 +5,7 @@ import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:app_tuner/widgets/stats_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../Pages/HomePage.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({Key? key}) : super(key: key);
@@ -12,31 +13,33 @@ class StatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context)=> StatsBloc(
-            tunerRepository: context.read<TunerRepository>(),
-        )..add(const StatsSubscriptionRequested()),
-        child: const StatsView(),
+      create: (context) => StatsBloc(
+        tunerRepository: context.read<TunerRepository>(),
+      )..add(const StatsSubscriptionRequested()),
+      child: const StatsView(),
     );
   }
 }
 
-class StatsView extends StatelessWidget{
+class StatsView extends StatelessWidget {
   const StatsView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    return BlocBuilder<StatsBloc,StatsState>(builder: (context,state){
-      if(state.status == StatsOverviewStatus.loading){
-        return const Center(child: CircularProgressIndicator(),);
-      }
-      if(state.status == StatsOverviewStatus.fail){
+    return BlocBuilder<StatsBloc, StatsState>(builder: (context, state) {
+      if (state.status == StatsOverviewStatus.loading) {
         return const Center(
-          child: Text("Error while getting stats"),
+          child: CircularProgressIndicator(),
+        );
+      }
+      if (state.status == StatsOverviewStatus.fail) {
+        return Center(
+          child: Text(DemoLocalizations.of(context).title),
         );
       }
 
-      if(state.stats.isEmpty){
+      if (state.stats.isEmpty) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -47,8 +50,8 @@ class StatsView extends StatelessWidget{
                 size: height * 0.05,
               ),
               Text(
-                "Stats List empty",
-                style: TextStyle(fontSize: height*0.03),
+                DemoLocalizations.of(context).noStats,
+                style: TextStyle(fontSize: height * 0.03),
               )
             ],
           ),

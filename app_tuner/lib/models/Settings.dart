@@ -41,6 +41,11 @@ InstrumentType? stringToInstype(String val) {
         ret = InstrumentType.violin;
         break;
       }
+    case "InstrumentType.all":
+      {
+        ret = InstrumentType.all;
+        break;
+      }
   }
   return ret;
 }

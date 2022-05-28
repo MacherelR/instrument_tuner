@@ -15,6 +15,10 @@ import 'package:pitchupdart/instrument_type.dart';
 import 'package:pitchupdart/pitch_handler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:oscilloscope/oscilloscope.dart';
+import 'package:flutter/foundation.dart' show SynchronousFuture;
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import '../Pages/HomePage.dart';
 
 class Tuner extends StatefulWidget {
   const Tuner({Key? key}) : super(key: key);
@@ -37,13 +41,13 @@ class _TunerState extends State<Tuner> {
   var note = "";
   var status = "Click start";
   double status2 = 0;
-  var status3 = "Click start";
   var diffFrequency = 0.0;
   List<double> tracePitch = [];
   double radians = 0.0;
   Timer? _timer;
   Stopwatch tuneTime = Stopwatch();
-  _generateTrace(Timer t) { // Tracepitch dans le bloc et ajouter dans le bloc
+  _generateTrace(Timer t) {
+    // Tracepitch dans le bloc et ajouter dans le bloc
     // Add to the growing dataset
     setState(() {
       tracePitch.add(diffFrequency);
@@ -52,13 +56,13 @@ class _TunerState extends State<Tuner> {
 
   @override
   void dispose() {
-    if(_timer != null) {
+    if (_timer != null) {
       _timer!.cancel();
     }
     super.dispose();
   }
 
-  Future<void> _startRecording() async {
+  Future<void> _startRecording(BuildContext context) async {
     if (permissions.isEnabled) {
       tuneTime.reset();
       tuneTime.start();
@@ -67,17 +71,16 @@ class _TunerState extends State<Tuner> {
           sampleRate: 44100, bufferSize: 3000);
       setState(() {
         note = "";
-        status = "Please play a note";
+        status = Text(DemoLocalizations.of(context).started).data!;
       });
     } else {
       if (!permissions.hasBeenRefused) {
         _showDialog();
       } else {
-        status = "Microphone access denied";
+        status = Text(DemoLocalizations.of(context).micPermissions).data!;
         note = "";
       }
     }
-
   }
 
 //   Future<void> _saveRandomStat() async{
@@ -94,7 +97,7 @@ class _TunerState extends State<Tuner> {
     _timer!.cancel();
     setState(() {
       note = "";
-      status = "Stopped, please click on start button";
+      status = Text(DemoLocalizations.of(context).stopped).data!;
     });
   }
 
@@ -122,7 +125,8 @@ class _TunerState extends State<Tuner> {
                     } else {
                       permissions.hasBeenRefused = false;
                     }
-                    _startRecording(); // context.read<TunerBloc>().start()
+                    _startRecording(
+                        context); // context.read<TunerBloc>().start()
                   },
                   child: const Text("Yes"))
             ],
@@ -130,12 +134,12 @@ class _TunerState extends State<Tuner> {
         });
   }
 
-  void listener(dynamic obj) { // Move to bloc private method
+  void listener(dynamic obj) {
+    // Move to bloc private method
     var buffer = Float64List.fromList(obj.cast<double>());
     final List<double> sample = buffer.toList();
     // Compute result pitch value
     final result = pitchDetectorDart.getPitch(sample);
-
 
     if (result.pitched) {
       final handledPitch = pitchUp.handlePitch(result.pitch);
@@ -193,14 +197,6 @@ class _TunerState extends State<Tuner> {
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold),
           )),
-          Center(
-              child: Text(
-            status3,
-            style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold),
-          )),
           Expanded(
             child: Row(
               children: [
@@ -208,13 +204,14 @@ class _TunerState extends State<Tuner> {
                     child: Center(
                         child: FloatingActionButton(
                             heroTag: "start",
-                            onPressed: _startRecording,
+                            onPressed: () => {_startRecording(context)},
                             child: const Text("Start")))),
                 Expanded(
                     child: Center(
                         child: FloatingActionButton(
                             heroTag: "stop",
-                            onPressed: _stopRecording,// context.read<TunerBloc>().method
+                            onPressed:
+                                _stopRecording, // context.read<TunerBloc>().method
                             child: const Text("Stop")))),
                 // Expanded(
                 //   child: Center(
