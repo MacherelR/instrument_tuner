@@ -4,22 +4,20 @@ import 'dart:math';
 
 import 'package:app_tuner/models/MicrophonePermissions.dart';
 import 'package:app_tuner/models/Settings.dart';
-import 'package:app_tuner/models/tunerChartData.dart';
+
 import 'package:app_tuner/models/tuner_stats.dart';
-import 'package:app_tuner/repository/settings_repository.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart' as geo;
+import 'package:geopoint/geopoint.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
-import 'package:pitchupdart/instrument_type.dart';
 import 'package:pitchupdart/pitch_handler.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:oscilloscope/oscilloscope.dart';
-import 'package:flutter/foundation.dart' show SynchronousFuture;
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import '../Pages/HomePage.dart';
+import 'package:latlong2/latlong.dart';
 
 class Tuner extends StatefulWidget {
   const Tuner({Key? key}) : super(key: key);
@@ -47,6 +45,8 @@ class _TunerState extends State<Tuner> {
   double radians = 0.0;
   Timer? _timer;
   Stopwatch tuneTime = Stopwatch();
+  geo.Position? localisation;
+  GeoPoint? location;
   _generateTrace(Timer t) {
     // Add to the growing dataset
     setState(() {
@@ -159,11 +159,48 @@ class _TunerState extends State<Tuner> {
   void initState() {
     super.initState();
     _getInstrumentType();
+    _getLocalisation();
   }
 
   void _getInstrumentType() async{
     final TunerSettings settings = await context.read<TunerRepository>().getSettings();
     pitchUp = PitchHandler(settings.instrumentType);
+  }
+
+  void _getLocalisation() async{
+    localisation = await _determinePosition();
+    if(localisation != null){
+      LatLng point = LatLng(localisation!.latitude,localisation!.longitude);
+      location = GeoPoint.fromLatLng(point: point);
+    }
+  }
+
+  Future<geo.Position?> _determinePosition() async {
+    bool serviceEnabled;
+    geo.LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await geo.Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return null; // Return null if location service is disabled
+    }
+
+    permission = await geo.Geolocator.checkPermission();
+    if (permission == geo.LocationPermission.denied) {
+      permission = await geo.Geolocator.requestPermission();
+      if (permission == geo.LocationPermission.denied) {
+        return null;// Return null if location service is disabled
+      }
+    }
+
+    if (permission == geo.LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return null;
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await geo.Geolocator.getCurrentPosition();
   }
 
   @override
@@ -222,8 +259,9 @@ class _TunerState extends State<Tuner> {
                             List<double> trace = tracePitch;
                             DateTime now = DateTime.now();
                             TunerStats stats = TunerStats(
-                                duration: dur,tracePitch: trace,date: now
+                                duration: dur,tracePitch: trace,date: now, location: location
                             );
+
                             context.read<TunerRepository>().saveStat(stats);
                           },
                           child: const Text("Save"),

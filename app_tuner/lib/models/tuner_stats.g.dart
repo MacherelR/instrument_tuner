@@ -17,7 +17,7 @@ class TunerStatsAdapter extends TypeAdapter<TunerStats> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TunerStats(
-      location: fields[0] as Position?,
+      location: fields[0] as GeoPoint?,
       duration: fields[1] as Duration,
       tracePitch: (fields[2] as List).cast<double>(),
       date: fields[4] as DateTime,

@@ -1,7 +1,10 @@
 
+
+
 import 'package:app_tuner/Stats/stats_bloc.dart';
 import 'package:app_tuner/Stats/stats_event.dart';
 import 'package:app_tuner/Stats/stats_state.dart';
+import 'package:app_tuner/models/tuner_stats.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:draw_graph/draw_graph.dart';
 import 'package:draw_graph/models/feature.dart';
@@ -13,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:oscilloscope/oscilloscope.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:geocoding/geocoding.dart' ;
 class StatsDetail extends StatelessWidget{
   final String statId;
   final Function onDelete;
@@ -34,7 +38,7 @@ class StatsDetail extends StatelessWidget{
 }
 
 class DetailsView extends StatelessWidget{
-  const DetailsView({
+  DetailsView({
     Key? key,
     required this.id,
     required this.onDelete,
@@ -42,7 +46,17 @@ class DetailsView extends StatelessWidget{
 
   final String id;
   final Function onDelete;
+  late final Placemark? address;
 
+  void _getAddress(TunerStats stat) async{
+    if(stat.location != null){
+      var addresses = await placemarkFromCoordinates(stat.location!.latitude, stat.location!.longitude);
+      address = addresses.first;
+    }
+    else{
+      address = null;
+    }
+  }
   @override
   Widget build(BuildContext context){
     return BlocBuilder<StatsBloc,StatsState>(
@@ -57,6 +71,10 @@ class DetailsView extends StatelessWidget{
             );
           }
           final stat = state.stats.where((s) => s.id == id).first;
+          _getAddress(stat);
+
+          print(stat.location);
+
 
           final Oscilloscope scopeOne = Oscilloscope(
             showYAxis: true,
@@ -110,13 +128,19 @@ class DetailsView extends StatelessWidget{
                         child: Text("Tuning date : " + DateFormat('yyyy-MM-dd hh:mm').format(stat.date),
                         style: Theme.of(context).textTheme.headlineMedium,),
                       ),
-                      Text("Duration in minutes : " +stat.duration.inMinutes.toString(),
+                      Text("Duration in seconds : " +stat.duration.inSeconds.toString(),
                       style: Theme.of(context).textTheme.subtitle1,),
                       // Expanded(flex: 1, child: scopeOne),
                     ],
                   ),
-                  // Spacer(),
+                  // Visibility(
+                  //     child: Text("Tuned at : " + address.toString()),
+                  //     visible: (address != null),
+                  //   maintainAnimation: true,
+                  //   maintainState: true,),
+
                   Expanded(child: charts.LineChart(lineTrace),),
+
                 ],
               ),
             ),

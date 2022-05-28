@@ -17,6 +17,7 @@ void main() async {
   final hiveStorage = HiveApi();
   Hive.registerAdapter(TunerStatsAdapter());
   Hive.registerAdapter(DurationAdapter());
+  Hive.registerAdapter(GeoPointAdapter());
   final sharedPrefsStorage =
       SharedPrefsSettingsAPI(plugin: await SharedPreferences.getInstance());
   runApp(App(
