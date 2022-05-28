@@ -10,6 +10,7 @@ import 'package:app_tuner/repository/settings_repository.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
 import 'package:pitchupdart/instrument_type.dart';
 import 'package:pitchupdart/pitch_handler.dart';
@@ -34,7 +35,7 @@ class _TunerState extends State<Tuner> {
   final pitchDetectorDart = PitchDetector(44100, 2000);
   // TODO : change instrumentType to the one selected
 
-  final pitchUp = PitchHandler(InstrumentType.guitar);
+  late final PitchHandler pitchUp;
   MicrophonePermissions permissions = MicrophonePermissions();
 
   // SettingsRepository appsSettings;
@@ -47,7 +48,6 @@ class _TunerState extends State<Tuner> {
   Timer? _timer;
   Stopwatch tuneTime = Stopwatch();
   _generateTrace(Timer t) {
-    // Tracepitch dans le bloc et ajouter dans le bloc
     // Add to the growing dataset
     setState(() {
       tracePitch.add(diffFrequency);
@@ -161,6 +161,12 @@ class _TunerState extends State<Tuner> {
   @override
   void initState() {
     super.initState();
+    _getInstrumentType();
+  }
+
+  void _getInstrumentType() async{
+    final TunerSettings settings = await context.read<TunerRepository>().getSettings();
+    pitchUp = PitchHandler(settings.instrumentType);
   }
 
   @override
@@ -211,7 +217,7 @@ class _TunerState extends State<Tuner> {
                         child: FloatingActionButton(
                             heroTag: "stop",
                             onPressed:
-                                _stopRecording, // context.read<TunerBloc>().method
+                                _stopRecording,
                             child: const Text("Stop")))),
                 // Expanded(
                 //   child: Center(

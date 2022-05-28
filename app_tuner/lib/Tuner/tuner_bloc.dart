@@ -43,17 +43,22 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
 
   Future<void> _onTunerPermissionRequested(
       TunerPermissionRequested event, Emitter<TunerState> emit) async {
-    if (state.permissions.isEnabled == false) {
-      state.permissions.RequestPermission();
+    state.permissions.RequestPermission();
+    if(state.permissions.isEnabled == true){
+      emit(state.copyWith(status: TunerStatus.permissionsEnabled));
+    }
+    else{
+      TunerDisplay disp = TunerDisplay("Permissions denied", null, null, null, null);
       emit(state.copyWith(status: TunerStatus.permissionDenied));
-      // Request logic
-    } else {
-      emit(state.copyWith(status: TunerStatus.running));
     }
   }
 
   Future<void> _onTunerStarted(
       TunerStarted event, Emitter<TunerState> emit) async {
+    if(state.permissions.isEnabled == false){
+      add(TunerPermissionRequested());
+      emit(state.copyWith(status: TunerStatus.permissionRequested));
+    }
     pitchUp = PitchHandler(state.settings.instrumentType);
     emit(state.copyWith(status: TunerStatus.running));
     tuneTime.reset();
@@ -80,11 +85,16 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
   }
 
   Future<void> _onTunerStopped(
-      TunerStopped event, Emitter<TunerState> emit) async {}
+      TunerStopped event, Emitter<TunerState> emit) async {
+    await state.audioRecorder.stop();
+    tuneTime.stop();
+    _timer!.cancel();
+    TunerDisplay disp = TunerDisplay("", null, "", null, null);
+    emit(state.copyWith(status: TunerStatus.stopped,displayedValues: disp));
+  }
 
   void listener(dynamic obj) {
-    // Move to bloc private method
-    print("-------------- In listener");
+    // print("listener");
     var buffer = Float64List.fromList(obj.cast<double>());
     final List<double> sample = buffer.toList();
     // Compute result pitch value
@@ -105,7 +115,7 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
 
   Future<void> _onTunerRefresh(
       TunerRefresh event, Emitter<TunerState> emit) async {
-    print("Tuner refreshed");
+    // print("Tuner refreshed");
     emit(state.copyWith(status: TunerStatus.refresh));
   }
   // Emit state for each thing

@@ -1,22 +1,13 @@
-import 'dart:async';
-import 'dart:math';
-import 'dart:typed_data';
-
 import 'package:app_tuner/Tuner/tuner_bloc.dart';
 import 'package:app_tuner/Tuner/tuner_state.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oscilloscope/oscilloscope.dart';
-import 'package:pitch_detector_dart/pitch_detector.dart';
 import 'package:pitchupdart/pitch_handler.dart';
 
-import '../Settings/settings_bloc.dart';
-import '../Settings/settings_state.dart';
 import '../Tuner/tuner_event.dart';
-import '../models/MicrophonePermissions.dart';
 import '../models/tuner_stats.dart';
 
 class TunerViewWidget extends StatefulWidget {
@@ -29,6 +20,7 @@ class TunerViewWidget extends StatefulWidget {
 class _TunerViewWidgetState extends State<TunerViewWidget> {
   @override
   void dispose() {
+    // context.read<TunerBloc>().;
     super.dispose();
   }
 
@@ -98,14 +90,14 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
                             Duration dur = const Duration(
                                 hours: 1, minutes: 1, seconds: 2);
                             List<double> trace = [
-                              446,
-                              448,
-                              450,
-                              457,
-                              498,
-                              422,
-                              435,
-                              440
+                              -9,
+                              -5,
+                              2,
+                              1,
+                              -3,
+                              3,
+                              4,
+                              0
                             ];
                             DateTime today = DateTime.now();
                             TunerStats rdm = TunerStats(

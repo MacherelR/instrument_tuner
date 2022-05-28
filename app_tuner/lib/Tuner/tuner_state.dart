@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
 
-enum TunerStatus {initial, loading, loaded, error, running, stopped, permissionsEnabled, permissionDenied, refresh}
+enum TunerStatus {initial, loading, loaded, error, running, stopped, permissionsEnabled, permissionDenied, refresh, permissionRequested}
 
 class TunerState extends Equatable{
   TunerState(
