@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oscilloscope/oscilloscope.dart';
-import 'package:pitchupdart/pitch_handler.dart';
 
 import '../Tuner/tuner_event.dart';
 import '../models/tuner_stats.dart';
+import '../pitchDetector_lib/pitchup_dart/lib/pitch_handler.dart';
 
 class TunerViewWidget extends StatefulWidget {
   const TunerViewWidget({Key? key}) : super(key: key);

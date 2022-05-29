@@ -3,7 +3,8 @@ import 'package:app_tuner/models/MicrophonePermissions.dart';
 import 'package:app_tuner/models/Settings.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
-import 'package:pitch_detector_dart/pitch_detector.dart';
+
+import '../pitchDetector_lib/pitch_detector_dart/lib/pitch_detector.dart';
 
 enum TunerStatus {initial, loading, loaded, error, running, stopped, permissionsEnabled, permissionDenied, refresh, permissionRequested}
 

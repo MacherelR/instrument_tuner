@@ -7,9 +7,9 @@ import 'package:app_tuner/Tuner/tuner_state.dart';
 import 'package:app_tuner/models/Settings.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:pitchupdart/pitch_handler.dart';
 import 'package:flutter/material.dart';
 import '../Pages/HomePage.dart';
+import '../pitchDetector_lib/pitchup_dart/lib/pitch_handler.dart';
 
 class TunerBloc extends Bloc<TunerEvent, TunerState> {
   TunerBloc({required TunerRepository tunerRepository})
@@ -118,9 +118,4 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
     // print("Tuner refreshed");
     emit(state.copyWith(status: TunerStatus.refresh));
   }
-  // Emit state for each thing
-
-  // Add start/stop event -> Start emit status running
-
-  // add permissions
 }

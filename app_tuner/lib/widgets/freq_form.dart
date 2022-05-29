@@ -2,10 +2,10 @@ import 'package:app_tuner/Settings/settings_state.dart';
 import 'package:app_tuner/models/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pitchupdart/instrument_type.dart';
 
 import '../Settings/settings_bloc.dart';
 import '../Settings/settings_event.dart';
+import '../pitchDetector_lib/pitchup_dart/lib/instrument_type.dart';
 
 class FrequencyForm extends StatefulWidget {
   const FrequencyForm({Key? key}) : super(key: key);
