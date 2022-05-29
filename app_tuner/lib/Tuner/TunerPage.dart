@@ -17,7 +17,6 @@ import 'package:latlong2/latlong.dart';
 
 class Tuner extends StatefulWidget {
   const Tuner({Key? key}) : super(key: key);
-  //MicrophonePermissions microphonePermissions;
   static const String route = '/home';
   @override
   State<Tuner> createState() => _TunerState();
@@ -32,7 +31,6 @@ class _TunerState extends State<Tuner> {
   late final PitchHandler pitchUp;
   MicrophonePermissions permissions = MicrophonePermissions();
   TunerState _tunerState = TunerState.initial;
-  // SettingsRepository appsSettings;
   var note = "";
   var status = "Click start";
   double status2 = 0;
