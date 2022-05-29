@@ -89,10 +89,14 @@ class _FrequencyFormState extends State<FrequencyForm> {
                       },
                       autovalidateMode: AutovalidateMode.always,
                       onChanged: (value) {
-                        setFrequency = double.tryParse(value)!;
-                        TunerSettings settings = TunerSettings(
-                            instrumentT: instrument, baseFrequency: setFrequency);
-                        context.read<SettingsBloc>().add(SettingsEdited(settings));
+                        var temp = double.tryParse(value);
+                        if(temp != null){
+                          TunerSettings settings = TunerSettings(
+                              instrumentT: instrument, baseFrequency: temp);
+                          context.read<SettingsBloc>().add(SettingsEdited(settings));
+                        }
+                        // If null, do not save
+
                       },
                     ),
                   ),

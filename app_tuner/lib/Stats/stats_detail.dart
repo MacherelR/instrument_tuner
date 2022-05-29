@@ -95,14 +95,20 @@ class DetailsView extends StatelessWidget{
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
-                        child: Text("Tuning date : " + DateFormat('yyyy-MM-dd hh:mm').format(stat.date),
-                        style: Theme.of(context).textTheme.headlineMedium,),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
+                          child: Text("Tuning date : " + DateFormat('yyyy-MM-dd hh:mm').format(stat.date),
+                            style: Theme.of(context).textTheme.headlineMedium,),
+                        ),
                       ),
-                      stat.duration.inSeconds > 60 ? Text("Duration in minutes : " + stat.duration.inMinutes.toString()) :
-                      Text("Duration in seconds : " +stat.duration.inSeconds.toString(),
-                      style: Theme.of(context).textTheme.subtitle1,),
+                      Center(
+                        child: stat.duration.inSeconds > 60 ? Text("Duration in minutes : " + stat.duration.inMinutes.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,) :
+                        Text("Duration in seconds : " +stat.duration.inSeconds.toString(),
+                          style: Theme.of(context).textTheme.subtitle1,),
+                      ),
+
                     ],
                   ),
 
