@@ -6,6 +6,7 @@ import 'package:pitchupdart/instrument_type.dart';
 
 import '../Settings/settings_bloc.dart';
 import '../Settings/settings_event.dart';
+import '../traductions.dart';
 
 class FrequencyForm extends StatefulWidget {
   const FrequencyForm({Key? key}) : super(key: key);
@@ -24,7 +25,8 @@ class _FrequencyFormState extends State<FrequencyForm> {
       InstrumentType instrument = settings.instrumentType;
       double setFrequency = settings.baseFrequency;
       String text = settings.baseFrequency.toString();
-      frequencyController.value = frequencyController.value.copyWith(text: text);
+      frequencyController.value =
+          frequencyController.value.copyWith(text: text);
       if (state.status == SettingsStatus.loading) {
         return const Center(
           child: CircularProgressIndicator(),
@@ -42,34 +44,37 @@ class _FrequencyFormState extends State<FrequencyForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Center(
-                    child: Text('Instrument Type'),
+                  Center(
+                    child: Text(
+                        LocalizationTraductions.of(context).instrumentType),
                   ),
                   Center(
-                     child: DropdownButton<InstrumentType>(
-                      value: settings.instrumentType,
-                      icon: const Icon(Icons.arrow_downward),
-                      items: InstrumentType.values
-                          .map((InstrumentType classType) {
-                        return DropdownMenuItem<InstrumentType>(
-                            value: classType, child: Text(classType.name));
-                      }).toList(),
-                      onChanged: (value) {
-                        // print("onChanged, value = " + value.toString());
-                        // instrument = value!;
-                        // print("instrument var value : " + instrument.toString());
-                        // setState(() {
-                        //   value: instrument;
-                        // });
-                        instrument = value!;
-                        TunerSettings settings = TunerSettings(
-                            instrumentT: instrument, baseFrequency: setFrequency);
-                        context.read<SettingsBloc>().add(SettingsEdited(settings));
-                      },
-                      )
-                  ),
-                  const Center(
-                    child: Text("A4 Frequency"),
+                      child: DropdownButton<InstrumentType>(
+                    value: settings.instrumentType,
+                    icon: const Icon(Icons.arrow_downward),
+                    items:
+                        InstrumentType.values.map((InstrumentType classType) {
+                      return DropdownMenuItem<InstrumentType>(
+                          value: classType, child: Text(classType.name));
+                    }).toList(),
+                    onChanged: (value) {
+                      // print("onChanged, value = " + value.toString());
+                      // instrument = value!;
+                      // print("instrument var value : " + instrument.toString());
+                      // setState(() {
+                      //   value: instrument;
+                      // });
+                      instrument = value!;
+                      TunerSettings settings = TunerSettings(
+                          instrumentT: instrument, baseFrequency: setFrequency);
+                      context
+                          .read<SettingsBloc>()
+                          .add(SettingsEdited(settings));
+                    },
+                  )),
+                  Center(
+                    child:
+                        Text(LocalizationTraductions.of(context).a4Frequency),
                   ),
                   SizedBox(
                     width: 100,
@@ -79,11 +84,18 @@ class _FrequencyFormState extends State<FrequencyForm> {
                       controller: frequencyController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Define frequency';
+                          return Text(LocalizationTraductions.of(context)
+                                  .defineFrequency)
+                              .data;
                         } else if (double.tryParse(value) == null) {
-                          return 'Not a Number';
+                          return Text(LocalizationTraductions.of(context)
+                                  .notANumber)
+                              .data;
                         } else if (double.tryParse(value) == 0.0) {
-                          return 'Zero not allowed';
+                          return Text(LocalizationTraductions.of(context)
+                                  .zeroForbidden)
+                              .data;
+                          ;
                         }
                         return null;
                       },
@@ -91,8 +103,11 @@ class _FrequencyFormState extends State<FrequencyForm> {
                       onChanged: (value) {
                         setFrequency = double.tryParse(value)!;
                         TunerSettings settings = TunerSettings(
-                            instrumentT: instrument, baseFrequency: setFrequency);
-                        context.read<SettingsBloc>().add(SettingsEdited(settings));
+                            instrumentT: instrument,
+                            baseFrequency: setFrequency);
+                        context
+                            .read<SettingsBloc>()
+                            .add(SettingsEdited(settings));
                       },
                     ),
                   ),

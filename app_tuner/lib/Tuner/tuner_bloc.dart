@@ -10,6 +10,7 @@ import 'package:bloc/bloc.dart';
 import 'package:pitchupdart/pitch_handler.dart';
 import 'package:flutter/material.dart';
 import '../Pages/HomePage.dart';
+import '../traductions.dart';
 
 class TunerBloc extends Bloc<TunerEvent, TunerState> {
   TunerBloc({required TunerRepository tunerRepository})
@@ -44,19 +45,24 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
   Future<void> _onTunerPermissionRequested(
       TunerPermissionRequested event, Emitter<TunerState> emit) async {
     state.permissions.RequestPermission();
-    if(state.permissions.isEnabled == true){
+    if (state.permissions.isEnabled == true) {
       emit(state.copyWith(status: TunerStatus.permissionsEnabled));
-    }
-    else{
-      TunerDisplay disp = TunerDisplay("Permissions denied", null, null, null, null);
+    } else {
+      TunerDisplay disp = TunerDisplay(
+          Text(LocalizationTraductions.of(event.context).permissionRefused)
+              .data,
+          null,
+          null,
+          null,
+          null);
       emit(state.copyWith(status: TunerStatus.permissionDenied));
     }
   }
 
   Future<void> _onTunerStarted(
       TunerStarted event, Emitter<TunerState> emit) async {
-    if(state.permissions.isEnabled == false){
-      add(TunerPermissionRequested());
+    if (state.permissions.isEnabled == false) {
+      add(TunerPermissionRequested(event.context));
       emit(state.copyWith(status: TunerStatus.permissionRequested));
     }
     pitchUp = PitchHandler(state.settings.instrumentType);
@@ -69,7 +75,7 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
     add(TunerRefresh());
     emit(state.copyWith(
         displayedValues: TunerDisplay(
-            Text(DemoLocalizations.of(event.context).title).data,
+            Text(LocalizationTraductions.of(event.context).title).data,
             null,
             "",
             null,
@@ -90,7 +96,7 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
     tuneTime.stop();
     _timer!.cancel();
     TunerDisplay disp = TunerDisplay("", null, "", null, null);
-    emit(state.copyWith(status: TunerStatus.stopped,displayedValues: disp));
+    emit(state.copyWith(status: TunerStatus.stopped, displayedValues: disp));
   }
 
   void listener(dynamic obj) {

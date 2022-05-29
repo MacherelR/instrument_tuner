@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Stats/stats_detail.dart';
+import '../traductions.dart';
 
-class StatsList extends StatelessWidget{
+class StatsList extends StatelessWidget {
   const StatsList({
     Key? key,
     required this.stats,
@@ -16,32 +17,33 @@ class StatsList extends StatelessWidget{
   final List<TunerStats> stats;
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: stats.length,
-      itemBuilder: (context,index){
+      itemBuilder: (context, index) {
         TunerStats stat = stats[index];
-        return StatItem(stat: stat,
-          onTap: ()=>
-                Navigator.of(context).push(MaterialPageRoute(builder: (_){
-                  return StatsDetail(
-                    statId: stat.id,
-                    onDelete: () => _removeStat(context, stat),
-                  );
-                })),
+        return StatItem(
+          stat: stat,
+          onTap: () =>
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+            return StatsDetail(
+              statId: stat.id,
+              onDelete: () => _removeStat(context, stat),
+            );
+          })),
         );
       },
     );
   }
 
-  void _removeStat(BuildContext context, TunerStats stat){
+  void _removeStat(BuildContext context, TunerStats stat) {
     context.read<StatsBloc>().add(StatsDeleted(stat));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.blue,
         duration: const Duration(seconds: 2),
         content: Text(
-          "stat from ${stat.date} has been deleted ",
+          "${stat.date}" + LocalizationTraductions.of(context).dateDeleted,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

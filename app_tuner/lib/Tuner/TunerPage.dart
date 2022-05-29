@@ -14,6 +14,7 @@ import 'package:pitchupdart/pitch_handler.dart';
 import 'package:oscilloscope/oscilloscope.dart';
 import '../Pages/HomePage.dart';
 import 'package:latlong2/latlong.dart';
+import '../traductions.dart';
 
 class Tuner extends StatefulWidget {
   const Tuner({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class Tuner extends StatefulWidget {
   State<Tuner> createState() => _TunerState();
 }
 
-enum TunerState {initial,running,stopped}
+enum TunerState { initial, running, stopped }
 
 class _TunerState extends State<Tuner> {
   final _audioRecorder = FlutterAudioCapture();
@@ -66,19 +67,17 @@ class _TunerState extends State<Tuner> {
           sampleRate: 44100, bufferSize: 3000);
       setState(() {
         note = "";
-        status = Text(DemoLocalizations.of(context).started).data!;
+        status = Text(LocalizationTraductions.of(context).started).data!;
       });
     } else {
       if (!permissions.hasBeenRefused) {
         _showDialog();
       } else {
-        status = Text(DemoLocalizations.of(context).micPermissions).data!;
+        status = Text(LocalizationTraductions.of(context).micPermissions).data!;
         note = "";
       }
     }
   }
-
-
 
   Future<void> _stopRecording() async {
     _tunerState = TunerState.stopped;
@@ -87,7 +86,7 @@ class _TunerState extends State<Tuner> {
     _timer!.cancel();
     setState(() {
       note = "";
-      status = Text(DemoLocalizations.of(context).stopped).data!;
+      status = Text(LocalizationTraductions.of(context).stopped).data!;
     });
   }
 
@@ -96,9 +95,10 @@ class _TunerState extends State<Tuner> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Microphone permissions disabled"),
-            content: const Text(
-                "The microphones permissions are disabled, do you want to request them ?"),
+            title: Text(LocalizationTraductions.of(context)
+                .microphonePermissionsRequired),
+            content:
+                Text(LocalizationTraductions.of(context).askForPermissions),
             actions: <Widget>[
               TextButton(
                   onPressed: () {
@@ -137,7 +137,7 @@ class _TunerState extends State<Tuner> {
         note = handledPitch.note;
         status = handledPitch.diffFrequency.toString();
         status2 = result.pitch;
-        diffFrequency = handledPitch.diffFrequency;
+        diffFrequency = -handledPitch.diffFrequency;
       });
       //context.read<TunerBloc>().add(TunerRefresh())
     }
@@ -155,15 +155,16 @@ class _TunerState extends State<Tuner> {
     _getLocalisation();
   }
 
-  void _getInstrumentType() async{
-    final TunerSettings settings = await context.read<TunerRepository>().getSettings();
+  void _getInstrumentType() async {
+    final TunerSettings settings =
+        await context.read<TunerRepository>().getSettings();
     pitchUp = PitchHandler(settings.instrumentType);
   }
 
-  void _getLocalisation() async{
+  void _getLocalisation() async {
     localisation = await _determinePosition();
-    if(localisation != null){
-      LatLng point = LatLng(localisation!.latitude,localisation!.longitude);
+    if (localisation != null) {
+      LatLng point = LatLng(localisation!.latitude, localisation!.longitude);
       location = GeoPoint.fromLatLng(point: point);
     }
   }
@@ -182,7 +183,7 @@ class _TunerState extends State<Tuner> {
     if (permission == geo.LocationPermission.denied) {
       permission = await geo.Geolocator.requestPermission();
       if (permission == geo.LocationPermission.denied) {
-        return null;// Return null if location service is disabled
+        return null; // Return null if location service is disabled
       }
     }
 
@@ -245,31 +246,30 @@ class _TunerState extends State<Tuner> {
                         visible: (_tunerState == TunerState.stopped),
                         maintainAnimation: true,
                         maintainState: true,
-                        child :FloatingActionButton(
+                        child: FloatingActionButton(
                           heroTag: "Save stat",
-                          onPressed: (){
+                          onPressed: () {
                             Duration dur = tuneTime.elapsed;
                             List<double> trace = tracePitch;
                             DateTime now = DateTime.now();
                             TunerStats stats = TunerStats(
-                                duration: dur,tracePitch: trace,date: now, location: location
-                            );
+                                duration: dur,
+                                tracePitch: trace,
+                                date: now,
+                                location: location);
 
                             context.read<TunerRepository>().saveStat(stats);
                           },
                           child: const Text("Save"),
-                        )
-                    ),
+                        )),
                   ),
                 ),
                 Expanded(
                     child: Center(
                         child: FloatingActionButton(
                             heroTag: "stop",
-                            onPressed:
-                                _stopRecording,
+                            onPressed: _stopRecording,
                             child: const Text("Stop")))),
-
               ],
             ),
           ),

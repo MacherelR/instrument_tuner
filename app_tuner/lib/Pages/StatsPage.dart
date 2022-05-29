@@ -6,6 +6,7 @@ import 'package:app_tuner/widgets/stats_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Pages/HomePage.dart';
+import '../traductions.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class StatsView extends StatelessWidget {
       }
       if (state.status == StatsOverviewStatus.fail) {
         return Center(
-          child: Text(DemoLocalizations.of(context).title),
+          child: Text(LocalizationTraductions.of(context).title),
         );
       }
 
@@ -50,7 +51,7 @@ class StatsView extends StatelessWidget {
                 size: height * 0.05,
               ),
               Text(
-                DemoLocalizations.of(context).noStats,
+                LocalizationTraductions.of(context).noStats,
                 style: TextStyle(fontSize: height * 0.03),
               )
             ],

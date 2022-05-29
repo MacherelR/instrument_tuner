@@ -13,7 +13,8 @@ class TunerSubscriptionRequested extends TunerEvent {
 }
 
 class TunerPermissionRequested extends TunerEvent {
-  const TunerPermissionRequested();
+  late BuildContext context;
+  TunerPermissionRequested(BuildContext context) : this.context = context;
 }
 
 class TunerStarted extends TunerEvent {
