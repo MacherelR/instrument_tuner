@@ -20,7 +20,6 @@ class TunerViewWidget extends StatefulWidget {
 class _TunerViewWidgetState extends State<TunerViewWidget> {
   @override
   void dispose() {
-    // context.read<TunerBloc>().;
     super.dispose();
   }
 
@@ -101,7 +100,6 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
                             TunerStats rdm = TunerStats(
                                 duration: dur, tracePitch: trace, date: today);
                             context.read<TunerRepository>().saveStat(rdm);
-                            print("Stat saved");
                           },
                           child: const Text("Save rdm stat"),
                         ),

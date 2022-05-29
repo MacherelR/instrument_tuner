@@ -1,10 +1,7 @@
 import 'dart:typed_data';
 import 'dart:async';
-import 'dart:math';
-
 import 'package:app_tuner/models/MicrophonePermissions.dart';
 import 'package:app_tuner/models/Settings.dart';
-
 import 'package:app_tuner/models/tuner_stats.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +11,6 @@ import 'package:geolocator/geolocator.dart' as geo;
 import 'package:geopoint/geopoint.dart';
 import 'package:pitch_detector_dart/pitch_detector.dart';
 import 'package:pitchupdart/pitch_handler.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:oscilloscope/oscilloscope.dart';
 import '../Pages/HomePage.dart';
 import 'package:latlong2/latlong.dart';
@@ -90,7 +86,6 @@ class _TunerState extends State<Tuner> {
     _tunerState = TunerState.stopped;
     await _audioRecorder.stop();
     tuneTime.stop();
-    print(tuneTime.elapsed);
     _timer!.cancel();
     setState(() {
       note = "";

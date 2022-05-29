@@ -1,22 +1,11 @@
-
-
-
 import 'package:app_tuner/Stats/stats_bloc.dart';
 import 'package:app_tuner/Stats/stats_event.dart';
 import 'package:app_tuner/Stats/stats_state.dart';
-import 'package:app_tuner/models/tuner_stats.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
-import 'package:draw_graph/draw_graph.dart';
-import 'package:draw_graph/models/feature.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:oscilloscope/oscilloscope.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:geocoding/geocoding.dart' ;
 class StatsDetail extends StatelessWidget{
   final String statId;
   final Function onDelete;
@@ -71,7 +60,6 @@ class DetailsView extends StatelessWidget{
           }
 
           final stat = state.stats.where((s) => s.id == id).first;
-          print(state.detailedAddress);
           final List<_ChartData> data = [];
           for(var i = 0; i< stat.tracePitch.length; i++){
             data.add(_ChartData(i,stat.tracePitch[i]));

@@ -37,6 +37,7 @@ class SharedPrefsSettingsAPI extends SettingsApi {
       return decodedSettings;
     }
     else{
+      //Default settings
       return const TunerSettings();
     }
   }

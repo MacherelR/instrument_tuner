@@ -1,6 +1,3 @@
-
-
-import 'package:app_tuner/Settings/settings_event.dart';
 import 'package:app_tuner/models/tuner_stats.dart';
 import 'package:equatable/equatable.dart';
 

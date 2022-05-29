@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'Pages/HomePage.dart';
-import 'Tuner/TunerPage.dart';
 
 class App extends StatefulWidget {
   const App({Key? key, required this.tunerRepository}) : super(key: key);

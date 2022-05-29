@@ -1,7 +1,5 @@
 
 
-import 'package:app_tuner/Tuner/TunerPage.dart';
-
 class TunerDisplay{
   TunerDisplay(String? ins, double? freq, String? playedNote,double? newTrace,String? statu){
     instruction = ins ?? instruction;
