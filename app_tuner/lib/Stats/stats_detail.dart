@@ -112,6 +112,7 @@ class DetailsView extends StatelessWidget{
                         child: Text("Tuning date : " + DateFormat('yyyy-MM-dd hh:mm').format(stat.date),
                         style: Theme.of(context).textTheme.headlineMedium,),
                       ),
+                      stat.duration.inSeconds > 60 ? Text("Duration in minutes : " + stat.duration.inMinutes.toString()) :
                       Text("Duration in seconds : " +stat.duration.inSeconds.toString(),
                       style: Theme.of(context).textTheme.subtitle1,),
                     ],
@@ -120,7 +121,7 @@ class DetailsView extends StatelessWidget{
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children : state.detailedAddress == null ? [Text("")] : [
+                      children : state.detailedAddress == null ? [Text("No location available")] : [
                         Text("Tuned at : " + state.detailedAddress!.street!),
                         Text(state.detailedAddress!.postalCode!),
                         Text(state.detailedAddress!.locality!),
