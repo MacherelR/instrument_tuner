@@ -31,3 +31,11 @@ class StatsDeleted extends StatsEvent{
   List<Object> get props => [stat];
 
 }
+
+class StatDetailLoad extends StatsEvent{
+  const StatDetailLoad(this.statId);
+  final String statId;
+
+  @override
+  List<Object> get props => [statId];
+}

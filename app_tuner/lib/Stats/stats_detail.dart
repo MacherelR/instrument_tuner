@@ -46,17 +46,7 @@ class DetailsView extends StatelessWidget{
 
   final String id;
   final Function onDelete;
-  late final Placemark? address;
 
-  void _getAddress(TunerStats stat) async{
-    if(stat.location != null){
-      var addresses = await placemarkFromCoordinates(stat.location!.latitude, stat.location!.longitude);
-      address = addresses.first;
-    }
-    else{
-      address = null;
-    }
-  }
   @override
   Widget build(BuildContext context){
     return BlocBuilder<StatsBloc,StatsState>(
@@ -65,29 +55,23 @@ class DetailsView extends StatelessWidget{
             prev.stats.length == next.stats.length;
         },
         builder: (context,state){
+          if(state.status != StatsOverviewStatus.detailLoaded){
+            context.read<StatsBloc>().add(StatDetailLoad(id));
+          }
+
           if(state.stats.isEmpty){
             return const Center(
               child: Text("No data"),
             );
           }
+          if(state.status == StatsOverviewStatus.detailLoading){
+            return const Center(
+                  child: CircularProgressIndicator(),
+                );
+          }
+
           final stat = state.stats.where((s) => s.id == id).first;
-          _getAddress(stat);
-
-          print(stat.location);
-
-
-          final Oscilloscope scopeOne = Oscilloscope(
-            showYAxis: true,
-            yAxisColor: Colors.orange,
-            margin: const EdgeInsets.all(0.0),
-            strokeWidth: 1.0,
-            backgroundColor: Colors.black,
-            traceColor: Colors.green,
-            yAxisMax: 10.0,
-            yAxisMin: -10.0,
-            dataSet: stat.tracePitch,
-          );
-
+          print(state.detailedAddress);
           final List<_ChartData> data = [];
           for(var i = 0; i< stat.tracePitch.length; i++){
             data.add(_ChartData(i,stat.tracePitch[i]));
@@ -130,14 +114,17 @@ class DetailsView extends StatelessWidget{
                       ),
                       Text("Duration in seconds : " +stat.duration.inSeconds.toString(),
                       style: Theme.of(context).textTheme.subtitle1,),
-                      // Expanded(flex: 1, child: scopeOne),
                     ],
                   ),
-                  // Visibility(
-                  //     child: Text("Tuned at : " + address.toString()),
-                  //     visible: (address != null),
-                  //   maintainAnimation: true,
-                  //   maintainState: true,),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children : state.detailedAddress == null ? [Text("")] : [
+                        Text("Tuned at : " + state.detailedAddress!.street!),
+                        Text(state.detailedAddress!.postalCode!),
+                        Text(state.detailedAddress!.locality!),
+                  ]),
 
                   Expanded(child: charts.LineChart(lineTrace),),
 

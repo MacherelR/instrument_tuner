@@ -29,11 +29,11 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
-      // if (state.status == SettingsStatus.loading) {
-      //   return const Center(
-      //     child: CircularProgressIndicator(),
-      //   );
-      // }
+      if (state.status == SettingsStatus.loading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
 
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,

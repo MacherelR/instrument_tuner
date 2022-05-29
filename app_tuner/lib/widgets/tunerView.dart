@@ -28,8 +28,6 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<TunerBloc, TunerState>(builder: (context, state) {
       final pitchUp = PitchHandler(state.settings.instrumentType);
-      // On click on start, call Bloc method
-      // check if status == permissionDenied, _showDialog sinon rien
       Oscilloscope scopeOne = Oscilloscope(
         showYAxis: true,
         yAxisColor: Color.fromARGB(255, 255, 0, 0),
