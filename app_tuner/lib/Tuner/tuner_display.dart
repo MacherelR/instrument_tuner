@@ -1,6 +1,8 @@
 
 
-class TunerDisplay{
+import 'package:equatable/equatable.dart';
+
+class TunerDisplay extends Equatable{
   TunerDisplay(String? ins, double? freq, String? playedNote,double? newTrace,String? statu){
     instruction = ins ?? instruction;
     frequency = freq ?? frequency;
@@ -21,4 +23,8 @@ class TunerDisplay{
   String note = "";
   double newDif= 0;
   String status3 = "";
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [instruction, frequency, note, newDif, status3];
 }

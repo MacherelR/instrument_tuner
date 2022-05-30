@@ -19,16 +19,14 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
     on<TunerPermissionRequested>(_onTunerPermissionRequested);
     on<TunerStarted>(_onTunerStarted);
     on<TunerStopped>(_onTunerStopped);
-    on<TunerRefresh>(_onTunerRefresh);
-    //Add remaining events
+    on<TunerPitchRefreshed>(_onTunerPitchRefresh);
+    on<TunerDisplayRefreshed>(_onTunerDisplayRefresh);
   }
 
   final TunerRepository _tunerRepository;
   Stopwatch tuneTime = Stopwatch();
   Timer? _timer;
   PitchHandler? pitchUp;
-  // final FlutterAudioCapture _audioRecorder = FlutterAudioCapture();
-  // Emitter<TunerState> refreshEmitter = Emitter<TunerState>();
 
   Future<void> _onTunerSubscriptionRequested(
       TunerSubscriptionRequested event, Emitter<TunerState> emit) async {
@@ -63,10 +61,9 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
     emit(state.copyWith(status: TunerStatus.running));
     tuneTime.reset();
     tuneTime.start();
-    _timer = Timer.periodic(Duration(milliseconds: 60), _generateTrace);
+    _timer = Timer.periodic(const Duration(milliseconds: 60), _generateTrace);
     await state.audioRecorder
         .start(listener, onError, sampleRate: 44100, bufferSize: 3000);
-    add(TunerRefresh());
     emit(state.copyWith(
         displayedValues: TunerDisplay(
             Text(DemoLocalizations.of(event.context).title).data,
@@ -74,14 +71,11 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
             "",
             null,
             null)));
-    // state.note = "";
-
-    // state.status1 = "Please play a note";
   }
 
   _generateTrace(Timer t) {
     // Add to the growing dataset
-    state.tracePitch.add(state.diffFrequency);
+    add(TunerPitchRefreshed([...state.tracePitch, state.displayedValues.newDif]));
   }
 
   Future<void> _onTunerStopped(
@@ -94,28 +88,26 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
   }
 
   void listener(dynamic obj) {
-    // print("listener");
     var buffer = Float64List.fromList(obj.cast<double>());
     final List<double> sample = buffer.toList();
     // Compute result pitch value
     final result = state.pitchDetectorDart.getPitch(sample);
 
-    add(TunerRefresh());
     if (result.pitched) {
       final handledPitch = pitchUp!.handlePitch(result.pitch);
       TunerDisplay disp = TunerDisplay(null, null, handledPitch.note,
           handledPitch.diffFrequency, handledPitch.diffFrequency.toString());
-      // state.note = handledPitch.note;
-      // state.status1 = handledPitch.diffFrequency.toString();
-      // state.status2 = result.pitch;
-      // state.diffFrequency = handledPitch.diffFrequency;
-      emit(state.copyWith(status: TunerStatus.refresh, displayedValues: disp));
+      add(TunerDisplayRefreshed(disp));
     }
   }
 
-  Future<void> _onTunerRefresh(
-      TunerRefresh event, Emitter<TunerState> emit) async {
-    // print("Tuner refreshed");
-    emit(state.copyWith(status: TunerStatus.refresh));
+  Future<void> _onTunerPitchRefresh(
+      TunerPitchRefreshed event, Emitter<TunerState> emit) async {
+    emit(state.copyWith(status: TunerStatus.refresh, tracePitch: event.tracePitch,));
+  }
+
+  Future<void> _onTunerDisplayRefresh(
+      TunerDisplayRefreshed event, Emitter<TunerState> emit) async {
+    emit(state.copyWith(status: TunerStatus.refresh, displayedValues: event.tunerDisplay));
   }
 }

@@ -10,29 +10,25 @@ enum TunerStatus {initial, loading, loaded, error, running, stopped, permissions
 
 class TunerState extends Equatable{
   TunerState(
-  {this.status = TunerStatus.initial,
-  this.settings = const TunerSettings(),TunerDisplay? disp}) : permissions = MicrophonePermissions(), displayedValues = disp ?? TunerDisplay.initial();
+      {this.status = TunerStatus.initial,
+        this.settings = const TunerSettings(),TunerDisplay? disp, List<double>? tp}) : permissions = MicrophonePermissions(), displayedValues = disp ?? TunerDisplay.initial(), tracePitch = tp ?? [];
   final TunerStatus status;
   final TunerSettings settings;
   final MicrophonePermissions permissions;
   final audioRecorder = FlutterAudioCapture();
   final pitchDetectorDart = PitchDetector(44100, 2000);
-  var diffFrequency = 0.0;
-  List<double> tracePitch = [];
-  var note = "";
-  var status1 = "Click start";
-  double status2 = 0;
-  var status3 = "Click start";
+  List<double> tracePitch;
   final TunerDisplay displayedValues;
-  // Add note, diffFrequency, permissionsStatus, etc
-  TunerState copyWith({TunerStatus? status, TunerSettings? settings, TunerDisplay? displayedValues}){
+  TunerState copyWith({TunerStatus? status, TunerSettings? settings, TunerDisplay? displayedValues, List<double>? tracePitch}){
     return TunerState(
-      status: status ?? this.status, settings: settings ?? this.settings,
-      disp : displayedValues ?? this.displayedValues);
+        status: status ?? this.status, settings: settings ?? this.settings,
+        disp : displayedValues ?? this.displayedValues,
+        tp: tracePitch ?? this.tracePitch
+    );
   }
 
 
 
   @override
-  List<Object> get props => [status, settings];
+  List<Object> get props => [status, settings, tracePitch, displayedValues];
 }
