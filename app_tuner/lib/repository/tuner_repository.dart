@@ -15,24 +15,18 @@ class TunerRepository {
   Future<TunerSettings> getSettings() async {
     return await _settingsApi.getSettings();
   }
-
   Future<void> saveSettings(TunerSettings tunerSettings) async {
     return await _settingsApi.saveSettings(tunerSettings);
   }
-
   Future<void> deleteSettings(String id) async {
     return await _settingsApi.deleteSettings(id);
   }
-
-
   Future<void> saveStat(TunerStats stat) async {
     return await _statsApi.saveStat(stat);
   }
-
   Future<void> deleteStat(String id) async {
     return await _statsApi.deleteStat(id);
   }
-
   Stream<List<TunerStats>> getStats(){
     return _statsApi.getStats();
   }
