@@ -1,3 +1,4 @@
+import 'package:app_tuner/Tuner/tuner_display.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
@@ -28,6 +29,12 @@ class TunerStopped extends TunerEvent {
   TunerStopped();
 }
 
-class TunerRefresh extends TunerEvent {
-  const TunerRefresh();
+class TunerPitchRefreshed extends TunerEvent {
+  const TunerPitchRefreshed(this.tracePitch);
+  final List<double> tracePitch;
+}
+
+class TunerDisplayRefreshed extends TunerEvent{
+  const TunerDisplayRefreshed(this.tunerDisplay);
+  final TunerDisplay tunerDisplay;
 }

@@ -102,18 +102,18 @@ class DetailsView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 16.0),
                       child: Text(
-                        LocalizationTraductions.of(context).tuningDate +
+                        LocalizationTraductions.of(context).tuningDate + " : " +
                             DateFormat('yyyy-MM-dd hh:mm').format(stat.date),
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
                     stat.duration.inSeconds > 60
                         ? Text(LocalizationTraductions.of(context)
-                                .durationInMinutes +
+                                .durationInMinutes + " : " +
                             stat.duration.inMinutes.toString())
                         : Text(
                             LocalizationTraductions.of(context)
-                                    .durationInSeconds +
+                                    .durationInSeconds + " : " +
                                 stat.duration.inSeconds.toString(),
                             style: Theme.of(context).textTheme.subtitle1,
                           ),

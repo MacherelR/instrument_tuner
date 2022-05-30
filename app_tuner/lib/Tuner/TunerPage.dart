@@ -257,7 +257,8 @@ class _TunerState extends State<Tuner> {
                                 duration: dur,
                                 tracePitch: trace,
                                 date: now,
-                                location: location);
+                                latitude: location != null ? location!.latitude : null,
+                                longitude: location != null ? location!.longitude : null);
 
                             context.read<TunerRepository>().saveStat(stats);
                           },

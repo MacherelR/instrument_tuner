@@ -26,13 +26,12 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TunerBloc, TunerState>(builder: (context, state) {
-      final pitchUp = PitchHandler(state.settings.instrumentType);
       Oscilloscope scopeOne = Oscilloscope(
         showYAxis: true,
-        yAxisColor: Color.fromARGB(255, 255, 0, 0),
+        yAxisColor: Colors.orange,
         margin: EdgeInsets.all(20.0),
         strokeWidth: 1.0,
-        backgroundColor: Color.fromARGB(255, 0, 38, 255),
+        backgroundColor: Colors.black,
         traceColor: Colors.green,
         yAxisMax: 10.0,
         yAxisMin: -10.0,
@@ -44,7 +43,17 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
             children: [
               Center(
                 child: Text(
-                  state.note,
+                  state.displayedValues.note,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  state.displayedValues.newDif.toString(),
                   style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 25.0,
@@ -70,38 +79,37 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
                     ),
                     Expanded(
                       child: Center(
+                        child: Visibility(
+                            visible: (state.status == TunerStatus.stopped),
+                            maintainAnimation: true,
+                            maintainState: true,
+                            child: FloatingActionButton(
+                              heroTag: "Save stat",
+                              onPressed: () {
+                                Duration dur = state.tunedTime!;
+                                List<double> trace = state.tracePitch;
+                                DateTime now = DateTime.now();
+                                TunerStats stats = TunerStats(
+                                    duration: dur,
+                                    tracePitch: trace,
+                                    date: now,
+                                    latitude: state.localisation != null ? state.localisation!.latitude : null,
+                                    longitude: state.localisation != null ? state.localisation!.longitude : null);
+
+                                context.read<TunerRepository>().saveStat(stats);
+                              },
+                              child: const Text("Save"),
+                            )),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
                         child: FloatingActionButton(
                           heroTag: "Stop",
                           onPressed: () {
                             context.read<TunerBloc>().add(TunerStopped());
                           },
                           child: const Text("Stop"),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: FloatingActionButton(
-                          heroTag: "Save random stat",
-                          onPressed: () {
-                            Duration dur = const Duration(
-                                hours: 1, minutes: 1, seconds: 2);
-                            List<double> trace = [
-                              -9,
-                              -5,
-                              2,
-                              1,
-                              -3,
-                              3,
-                              4,
-                              0
-                            ];
-                            DateTime today = DateTime.now();
-                            TunerStats rdm = TunerStats(
-                                duration: dur, tracePitch: trace, date: today);
-                            context.read<TunerRepository>().saveStat(rdm);
-                          },
-                          child: const Text("Save rdm stat"),
                         ),
                       ),
                     ),
@@ -113,9 +121,6 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
           ),
         ),
       );
-      // return ElevatedButton(onPressed: (){
-      //   context.read<TunerBloc>().add(TunerPermissionRequested());
-      // }, child: const Text("Send request status"));
     });
   }
 }

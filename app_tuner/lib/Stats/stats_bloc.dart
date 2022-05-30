@@ -45,10 +45,10 @@ class StatsBloc extends Bloc<StatsEvent, StatsState>{
   }
 
   Future<void> _getAddress(TunerStats stat) async{
-    if(stat.location != null){
+    if(stat.latitude != null && stat.longitude != null){
       // Sometimes locator point crashes
       try{
-        var addresses = await placemarkFromCoordinates(stat.location!.latitude, stat.location!.longitude);
+        var addresses = await placemarkFromCoordinates(stat.latitude!, stat.longitude!);
         state.detailedAddress = addresses.first;
       }
       catch(e){
