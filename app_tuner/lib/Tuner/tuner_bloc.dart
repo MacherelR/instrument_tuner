@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:app_tuner/Tuner/tuner_display.dart';
 import 'package:app_tuner/Tuner/tuner_event.dart';
 import 'package:app_tuner/Tuner/tuner_state.dart';
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';

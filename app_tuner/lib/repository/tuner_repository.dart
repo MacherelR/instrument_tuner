@@ -1,9 +1,8 @@
 import 'package:app_tuner/Apis/SettingsApi.dart';
 import 'package:app_tuner/models/tuner_stats.dart';
-import 'package:app_tuner/repository/settings_repository.dart';
 
 import '../Apis/stats_api.dart';
-import '../models/Settings.dart';
+import '../Settings/Settings.dart';
 
 class TunerRepository {
   const TunerRepository({required SettingsApi settingsApi,required StatsApi statsApi})

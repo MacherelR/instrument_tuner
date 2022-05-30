@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Settings/SettingsPage.dart';
-import '../Tuner/TunerPage.dart';
+import 'deprecated/TunerPage.dart';
 import '../Tuner/TunerPage_2.dart';
 
 import 'dart:async';

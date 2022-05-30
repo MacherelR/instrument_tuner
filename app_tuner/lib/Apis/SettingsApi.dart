@@ -1,4 +1,4 @@
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 
 abstract class SettingsApi {
   Future<void> deleteSettings(String id);

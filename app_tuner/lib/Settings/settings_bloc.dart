@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:app_tuner/Settings/settings_event.dart';
 import 'package:app_tuner/Settings/settings_state.dart';
-import 'package:app_tuner/models/Settings.dart';
-import 'package:app_tuner/repository/settings_repository.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:bloc/bloc.dart';
 

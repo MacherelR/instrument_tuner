@@ -1,6 +1,6 @@
 import 'package:app_tuner/Tuner/tuner_display.dart';
 import 'package:app_tuner/models/MicrophonePermissions.dart';
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:geopoint/geopoint.dart';
