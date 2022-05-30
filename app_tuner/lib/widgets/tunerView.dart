@@ -51,6 +51,17 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
                   ),
+
+                ),
+              ),
+              Center(
+                child: Text(
+                  state.displayedValues.newDif.toString(),
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Expanded(
@@ -80,32 +91,32 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Center(
-                        child: FloatingActionButton(
-                          heroTag: "Save random stat",
-                          onPressed: () {
-                            Duration dur = const Duration(
-                                hours: 1, minutes: 1, seconds: 2);
-                            List<double> trace = [
-                              -9,
-                              -5,
-                              2,
-                              1,
-                              -3,
-                              3,
-                              4,
-                              0
-                            ];
-                            DateTime today = DateTime.now();
-                            TunerStats rdm = TunerStats(
-                                duration: dur, tracePitch: trace, date: today);
-                            context.read<TunerRepository>().saveStat(rdm);
-                          },
-                          child: const Text("Save rdm stat"),
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Center(
+                    //     child: FloatingActionButton(
+                    //       heroTag: "Save random stat",
+                    //       onPressed: () {
+                    //         Duration dur = const Duration(
+                    //             hours: 1, minutes: 1, seconds: 2);
+                    //         List<double> trace = [
+                    //           -9,
+                    //           -5,
+                    //           2,
+                    //           1,
+                    //           -3,
+                    //           3,
+                    //           4,
+                    //           0
+                    //         ];
+                    //         DateTime today = DateTime.now();
+                    //         TunerStats rdm = TunerStats(
+                    //             duration: dur, tracePitch: trace, date: today);
+                    //         context.read<TunerRepository>().saveStat(rdm);
+                    //       },
+                    //       child: const Text("Save rdm stat"),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

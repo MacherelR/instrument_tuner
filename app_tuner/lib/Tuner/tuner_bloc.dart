@@ -8,6 +8,7 @@ import 'package:app_tuner/models/Settings.dart';
 import 'package:app_tuner/repository/tuner_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import '../Pages/HomePage.dart';
 import '../pitchDetector_lib/pitchup_dart/lib/pitch_handler.dart';
 
@@ -47,22 +48,22 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
     }
     else{
       TunerDisplay disp = TunerDisplay("Permissions denied", null, null, null, null);
-      emit(state.copyWith(status: TunerStatus.permissionDenied));
+      emit(state.copyWith(status: TunerStatus.permissionDenied,displayedValues: disp));
     }
   }
 
   Future<void> _onTunerStarted(
       TunerStarted event, Emitter<TunerState> emit) async {
     if(state.permissions.isEnabled == false){
-      add(TunerPermissionRequested());
+      add(const TunerPermissionRequested());
       emit(state.copyWith(status: TunerStatus.permissionRequested));
     }
     pitchUp = PitchHandler(state.settings.instrumentType);
-    emit(state.copyWith(status: TunerStatus.running));
+    emit(state.copyWith(status: TunerStatus.running,tracePitch: []));
     tuneTime.reset();
     tuneTime.start();
     _timer = Timer.periodic(const Duration(milliseconds: 60), _generateTrace);
-    await state.audioRecorder
+    await state.audioCapture!
         .start(listener, onError, sampleRate: 44100, bufferSize: 3000);
     emit(state.copyWith(
         displayedValues: TunerDisplay(
@@ -80,9 +81,12 @@ class TunerBloc extends Bloc<TunerEvent, TunerState> {
 
   Future<void> _onTunerStopped(
       TunerStopped event, Emitter<TunerState> emit) async {
-    await state.audioRecorder.stop();
+    await state.audioCapture!.stop();
     tuneTime.stop();
-    _timer!.cancel();
+    if(_timer != null){
+      _timer!.cancel();
+      _timer = null;
+    }
     TunerDisplay disp = TunerDisplay("", null, "", null, null);
     emit(state.copyWith(status: TunerStatus.stopped,displayedValues: disp));
   }

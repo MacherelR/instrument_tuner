@@ -11,16 +11,21 @@ enum TunerStatus {initial, loading, loaded, error, running, stopped, permissions
 class TunerState extends Equatable{
   TunerState(
       {this.status = TunerStatus.initial,
-        this.settings = const TunerSettings(),TunerDisplay? disp, List<double>? tp}) : permissions = MicrophonePermissions(), displayedValues = disp ?? TunerDisplay.initial(), tracePitch = tp ?? [];
+        this.settings = const TunerSettings(),TunerDisplay? disp, List<double>? tp, FlutterAudioCapture? audioRecorder}) :
+        permissions = MicrophonePermissions(), displayedValues = disp ?? TunerDisplay.initial(), tracePitch = tp ?? [],
+        audioCapture = audioRecorder ?? FlutterAudioCapture()
+  ;
   final TunerStatus status;
   final TunerSettings settings;
   final MicrophonePermissions permissions;
-  final audioRecorder = FlutterAudioCapture();
+  final FlutterAudioCapture? audioCapture;
   final pitchDetectorDart = PitchDetector(44100, 2000);
   List<double> tracePitch;
   final TunerDisplay displayedValues;
-  TunerState copyWith({TunerStatus? status, TunerSettings? settings, TunerDisplay? displayedValues, List<double>? tracePitch}){
+  // Add note, diffFrequency, permissionsStatus, etc
+  TunerState copyWith({TunerStatus? status, TunerSettings? settings, FlutterAudioCapture? aCapture,  TunerDisplay? displayedValues, List<double>? tracePitch}){
     return TunerState(
+        audioRecorder: aCapture ?? audioCapture,
         status: status ?? this.status, settings: settings ?? this.settings,
         disp : displayedValues ?? this.displayedValues,
         tp: tracePitch ?? this.tracePitch
@@ -30,5 +35,5 @@ class TunerState extends Equatable{
 
 
   @override
-  List<Object> get props => [status, settings, tracePitch, displayedValues];
+  List<Object?> get props => [status, settings, audioCapture, tracePitch, displayedValues];
 }

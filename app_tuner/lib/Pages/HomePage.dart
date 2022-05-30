@@ -119,7 +119,7 @@ class HomeView extends StatelessWidget {
         title: Text(DemoLocalizations.of(context).title),
       ),
       body: selectedTab == HomeTab.tuner
-          ? const Tuner()
+          ? const TunerScreen()
           : selectedTab == HomeTab.stats
               ? const StatsScreen()
               : const SettingsScreen(),
