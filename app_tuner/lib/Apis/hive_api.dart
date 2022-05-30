@@ -45,6 +45,9 @@ class HiveApi extends StatsApi{
 
   @override
   Future<void> saveStat(TunerStats stat) async{
+    print("Hive api save stat : coords");
+    print(stat.latitude);
+    print(stat.longitude);
     final stats = [..._statsStreamController.value];
     final statIndex = stats.indexWhere((e) => e.id == stat.id);
     if(statIndex >= 0){

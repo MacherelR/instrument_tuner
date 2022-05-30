@@ -1,4 +1,4 @@
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 import 'package:equatable/equatable.dart';
 
 enum SettingsStatus { initial, loading, loaded, error }

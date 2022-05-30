@@ -1,5 +1,5 @@
 import 'package:app_tuner/Settings/settings_state.dart';
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,12 +58,6 @@ class _FrequencyFormState extends State<FrequencyForm> {
                           value: classType, child: Text(classType.name));
                     }).toList(),
                     onChanged: (value) {
-                      // print("onChanged, value = " + value.toString());
-                      // instrument = value!;
-                      // print("instrument var value : " + instrument.toString());
-                      // setState(() {
-                      //   value: instrument;
-                      // });
                       instrument = value!;
                       TunerSettings settings = TunerSettings(
                           instrumentT: instrument, baseFrequency: setFrequency);

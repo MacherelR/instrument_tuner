@@ -17,7 +17,8 @@ class TunerStatsAdapter extends TypeAdapter<TunerStats> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TunerStats(
-      location: fields[0] as GeoPoint?,
+      latitude: fields[5] as double?,
+      longitude: fields[6] as double?,
       duration: fields[1] as Duration,
       tracePitch: (fields[2] as List).cast<double>(),
       date: fields[4] as DateTime,
@@ -28,9 +29,7 @@ class TunerStatsAdapter extends TypeAdapter<TunerStats> {
   @override
   void write(BinaryWriter writer, TunerStats obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.location)
+      ..writeByte(6)
       ..writeByte(1)
       ..write(obj.duration)
       ..writeByte(2)
@@ -38,7 +37,11 @@ class TunerStatsAdapter extends TypeAdapter<TunerStats> {
       ..writeByte(3)
       ..write(obj.id)
       ..writeByte(4)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(5)
+      ..write(obj.latitude)
+      ..writeByte(6)
+      ..write(obj.longitude);
   }
 
   @override

@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:app_tuner/Tuner/TunerPage.dart';
+import 'package:app_tuner/deprecated/TunerPage.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:app_tuner/Apis/SettingsApi.dart';
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 
 class SharedPrefsSettingsAPI extends SettingsApi {
   final _settingsKey = "settings_key";

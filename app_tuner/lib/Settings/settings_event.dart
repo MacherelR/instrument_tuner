@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:app_tuner/models/Settings.dart';
+import 'package:app_tuner/Settings/Settings.dart';
 
 abstract class SettingsEvent extends Equatable {
   const SettingsEvent();
