@@ -26,13 +26,14 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TunerBloc, TunerState>(builder: (context, state) {
-      final pitchUp = PitchHandler(state.settings.instrumentType);
+      // print(state);
+      //print(state.tracePitch);
       Oscilloscope scopeOne = Oscilloscope(
         showYAxis: true,
-        yAxisColor: Color.fromARGB(255, 255, 0, 0),
+        yAxisColor: Colors.orange,
         margin: EdgeInsets.all(20.0),
         strokeWidth: 1.0,
-        backgroundColor: Color.fromARGB(255, 0, 38, 255),
+        backgroundColor: Colors.black,
         traceColor: Colors.green,
         yAxisMax: 10.0,
         yAxisMin: -10.0,
@@ -44,7 +45,7 @@ class _TunerViewWidgetState extends State<TunerViewWidget> {
             children: [
               Center(
                 child: Text(
-                  state.note,
+                  state.displayedValues.note,
                   style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 25.0,
