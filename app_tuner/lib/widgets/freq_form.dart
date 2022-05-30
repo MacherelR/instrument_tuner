@@ -2,11 +2,11 @@ import 'package:app_tuner/Settings/settings_state.dart';
 import 'package:app_tuner/models/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pitchupdart/instrument_type.dart';
 
 import '../Settings/settings_bloc.dart';
 import '../Settings/settings_event.dart';
 import '../traductions.dart';
+import '../pitchDetector_lib/pitchup_dart/lib/instrument_type.dart';
 
 class FrequencyForm extends StatefulWidget {
   const FrequencyForm({Key? key}) : super(key: key);
@@ -101,13 +101,15 @@ class _FrequencyFormState extends State<FrequencyForm> {
                       },
                       autovalidateMode: AutovalidateMode.always,
                       onChanged: (value) {
-                        setFrequency = double.tryParse(value)!;
-                        TunerSettings settings = TunerSettings(
-                            instrumentT: instrument,
-                            baseFrequency: setFrequency);
-                        context
-                            .read<SettingsBloc>()
-                            .add(SettingsEdited(settings));
+                        var temp = double.tryParse(value);
+                        if (temp != null) {
+                          TunerSettings settings = TunerSettings(
+                              instrumentT: instrument, baseFrequency: temp);
+                          context
+                              .read<SettingsBloc>()
+                              .add(SettingsEdited(settings));
+                        }
+                        // If null, do not save
                       },
                     ),
                   ),

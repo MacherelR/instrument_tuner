@@ -1,4 +1,4 @@
-import 'package:pitchupdart/instrument_type.dart';
+import '../pitchDetector_lib/pitchup_dart/lib/instrument_type.dart';
 
 class TunerSettings {
   const TunerSettings(

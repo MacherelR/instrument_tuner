@@ -9,12 +9,13 @@ import 'package:flutter_audio_capture/flutter_audio_capture.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:geopoint/geopoint.dart';
-import 'package:pitch_detector_dart/pitch_detector.dart';
-import 'package:pitchupdart/pitch_handler.dart';
 import 'package:oscilloscope/oscilloscope.dart';
 import '../Pages/HomePage.dart';
 import 'package:latlong2/latlong.dart';
 import '../traductions.dart';
+
+import '../pitchDetector_lib/pitch_detector_dart/lib/pitch_detector.dart';
+import '../pitchDetector_lib/pitchup_dart/lib/pitch_handler.dart';
 
 class Tuner extends StatefulWidget {
   const Tuner({Key? key}) : super(key: key);
