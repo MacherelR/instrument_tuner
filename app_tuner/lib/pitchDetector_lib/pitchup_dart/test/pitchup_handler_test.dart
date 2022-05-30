@@ -1,10 +1,10 @@
 // ignore_for_file: constant_identifier_names
 
 import "package:test/test.dart";
-import 'package:pitchupdart/instrument_type.dart';
-import 'package:pitchupdart/pitch_handler.dart';
-import 'package:pitchupdart/pitch_result.dart';
-import 'package:pitchupdart/tuning_status.dart';
+import '../lib/instrument_type.dart';
+import '../lib/pitch_handler.dart';
+import '../lib/pitch_result.dart';
+import '../lib/tuning_status.dart';
 
 void main() {
   const epsilon = 0.05;
