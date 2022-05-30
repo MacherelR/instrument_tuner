@@ -24,8 +24,6 @@ class LocalizationTraductions {
       'title': 'Instrument Tuner',
       'stats': 'Stats',
       'settings': 'Settings',
-      'test': 'AAAAAAAAAAAAAAAAAAAAA',
-      'micPermissions': 'Permissions refused, please allow microphone access',
       'started': 'Started, please play a note',
       'stopped': 'Stopped, please click on start button',
       'noStats': 'No stats available',
@@ -55,7 +53,6 @@ class LocalizationTraductions {
       'title': 'Accordeur d\'instrument',
       'stats': 'Statistiques',
       'settings': 'Paramètres',
-      'test': 'AAAAAAAAAAAAAAAAAAAAA',
       'micPermissions':
           'Permissions refusées, veuillez autoriser l\'accès au microphone',
       'started': 'Démarré, veuillez jouer une note',
